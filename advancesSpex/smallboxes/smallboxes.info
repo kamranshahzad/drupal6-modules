@@ -1,0 +1,5 @@
+; $Id$
+name = "smallboxes"
+description = 4 Small Boxes .
+package = Advanced
+core = 6.x

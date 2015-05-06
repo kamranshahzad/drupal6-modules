@@ -1,0 +1,36 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+function flash_banner_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Flash Banner on Main Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] =flash_banner_html();
+						return $blocks;
+	}
+}
+
+function flash_banner_html()
+{ 
+		
+		$flash = swf("http://hennock-primary.devon.sch.uk/site2/sites/all/modules/flash_banner/swf/banner.swf",
+			array(
+			  'params' => array(
+				'height' => '247',
+				'width' => '542',
+				'bgcolor' => '#FFFFFF'
+			  )
+			)
+		  );
+		
+		return $flash;
+}

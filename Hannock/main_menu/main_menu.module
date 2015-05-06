@@ -1,0 +1,98 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+function main_menu_init()
+{
+	$path = drupal_get_path('module', 'main_menu');
+	drupal_add_js($path.'/js/jquery.droppy.js');
+  	drupal_add_css($path .'/css/droppy.css');
+}
+
+
+function main_menu_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Main Menus');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = main_menu_html();
+						return $blocks;
+	}
+}
+
+
+function main_menu_html()
+{
+	
+	$out = '';
+	
+	$out .= '<ul id="nav">';
+	$out .= '<li class="homeBT"><a href="http://hennock-primary.devon.sch.uk/site2/" style="height:20px;"></a></li>';
+	
+	
+	// Pointing Areas
+	/*$out .= '<li class="childBT"><a href="#" style="height:20px;"></a>';
+    $out .= '<ul>';
+    $out .= '<li><a href="?q=node/7">School Club</a></li>';
+    $out .= '<li>';
+    $out .= '<a href="?q=node/8">School Events</a>';
+    $out .= '<ul>';
+    $out .= '</ul>';
+    $out .= '</li>';
+    
+	$out .= '<li><a href="?q=node/3">Classes</a>';
+    $out .= '<ul>';
+    $out .= '<li><a href="?q=node/2">Foundation</a></li>';
+    $out .= '<li><a href="?q=node/4">Class-1</a></li>';
+    $out .= '<li><a href="?q=node/6">Class-2</a></li>';
+    $out .= '</ul>';
+    $out .= '</li>';
+    $out .= '</ul></li>';*/
+	// Ending Area
+	
+	/* Validation */
+	
+	$out .= '<li class="childBT"><a href="#" style="height:20px;"></a>';
+    $out .= '<ul>';
+    $out .= '<li><a href="?q=node/7">School Club</a></li>';
+    $out .= '<li><a href="?q=node/8">School Events</a></li>';
+    $out .= '<li><a href="?q=node/3">Classes</a>';
+    $out .= '<ul>';
+    $out .= '<li><a href="?q=node/2">Foundation</a></li>';
+    $out .= '<li><a href="?q=node/4">Class-1</a></li>';
+    $out .= '<li><a href="?q=node/6">Class-2</a></li>';
+    $out .= '</ul>';
+    $out .= '</li>';
+    $out .= '</ul>';
+  	$out .= '</li>';
+	
+	//end of validation
+	
+	
+	$out .= '<li class="aboutBT" ><a href="?q=node/1" style="height:20px;"></a>';
+  	$out .= '<ul style="margin-left:20px;">';
+   	$out .= '<li><a href="?q=content/staff/display">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About Staff</a></li>';
+	$out .= '<li><a href="?q=content/governors/display">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;About Governors</a></li>';
+    $out .= '</ul>';
+  	$out .= '</li>';
+	
+	//logo Space 
+	$out .= '<li class="btn-logospace"><span class="opaque">Hennock Community School</span></li>';
+	
+	$out .= '<li class="newletterBT" ><a href="?q=content/newsletter/display" style="height:20px;"></a></li>';
+	
+	$out .= '<li class="calernderBT"><a href="?q=content/calender/display" style="height:20px;"></a></li>';
+	
+	$out .= '<li class="contactBT"><a href="?q=content/contact/display" style="height:20px;"></a></li>';
+	
+	$out .= '<li class="preschoolBT"><a href="?q=content/pre_school/display" style="height:20px;"></a></li>';
+	
+	$out .= '</ul>';
+	return $out;
+}

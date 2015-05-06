@@ -1,0 +1,30 @@
+<?php
+// $Id$
+
+
+function siteadds_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Display Site Advertisment on Main Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = siteadds_html();
+						return $blocks;
+	}
+}
+
+function siteadds_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+		$out .= '<div class="topimage03"> </div>';
+		$out .= '<div class="midimage03">';
+		$out .= '<img src="'.$tPath.'bigcrumbs-image.jpg" alt="" width="160" height="600" hspace="18" />';
+		$out .= '</div>';
+		$out .= '<div class="bottomimage03"></div>';
+		
+		return $out;
+}

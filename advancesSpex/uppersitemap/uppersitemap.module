@@ -1,0 +1,37 @@
+<?php
+// $Id$
+
+
+function uppersitemap_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Upper Site Map');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = uppersitemap_html();
+						return $blocks;
+	}
+}
+
+function uppersitemap_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+			
+		$out .= '<ul>';
+		$out .= '<li style="padding-right:55px">Sitemap</li>';
+		$out .= '<li>'.l('Home',$base_url).'</li>';
+		$out .= '<li>'.l('Product' , 'catalog').'</li>';
+		$out .= '<li>'.l('How To' , 'node/10').'</li>';
+		$out .= '<li>'.l('Customer Service' , 'node/29').'</li>';
+		$out .= '<li>'.l('About Us' , 'node/8').'</li>';
+		$out .= '<li>'.l('Order' , 'node/40').'</li>';
+		$out .= '<li>'.l('Members Area' , 'user').'</li>';
+		$out .= '</ul>';
+		$out .= '<div class="clear"></div>';
+		
+		return $out;
+}

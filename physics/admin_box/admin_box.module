@@ -1,0 +1,123 @@
+<?php
+// $Id: my.module,v 1.5 2009/01/11 13:49:11 kirie Exp $
+
+
+function admin_box_init()
+{
+ 	$theme = drupal_get_path('theme', 'physics');
+	
+		
+}
+
+
+
+function admin_box_perm() {
+  return array('administer admin_box', 'use PHP for my visibility');
+}
+
+
+
+/*function search_topic_menu() {
+  $items = array();
+  $items['search_topic/list/%/result'] = array(
+   		    'title' => 'Topics Search Result',
+			'page callback' => 'get_all_topics_seached',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+function search_topic_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('did' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'did' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  $doc = db_fetch_object(db_query('SELECT * FROM {documents} WHERE '. implode(' AND ', $query), $params));
+  return $doc;
+}
+*/
+
+
+function admin_box_block($op='list', $delta=0, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Administrators Icons');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = admin_box_front();
+						return $blocks;
+		}
+}
+
+
+
+function admin_box_front()
+{
+	$theme = drupal_get_path('theme', 'physics');
+	
+	global $user;
+		
+	$out = '';
+	
+	
+	if( $user->uid == 1)
+	{
+			
+			$out .= '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
+          	$out .= '<tr>';
+            $out .= '<td width="152"><a href="?q=admin/build/topics"><img src="'.$theme.'/images/create-new-topic.jpg" width="152" height="154" border="0" /></a></td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td width="152"><a href="?q=admin/build/documents" ><img src="'.$theme.'/images/upload-oleve.jpg" width="152" height="154"  border="0"/></a></td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td width="152"><a href="?q=admin/build/documents" ><img src="'.$theme.'/images/upload-alevel.jpg" width="152" height="154" border="0" /></a></td>';
+            $out .= '</tr>';
+          	$out .= '<tr>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '</tr>';
+          	$out .= '<tr>';
+            $out .= '<td><a href="?q=admin/user/user" ><img src="'.$theme.'/images/manage-user.jpg" width="152" height="154" border="0"/></td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td><a href="?q=user" ><img src="'.$theme.'/images/change-password.jpg" width="152" height="154" border="0"/></td>';
+            $out .= '<td>&nbsp;</td>';
+            $out .= '<td><a href="?q=logout" ><img src="'.$theme.'/images/logoff.jpg" width="152" height="154" border="0"/></td>';
+            $out .= '</tr>';
+        	$out .= '</table>';
+	
+	}
+	else
+	{
+		//drupal_goto('http://insuranceplanet.biz/client/physics/'); 
+		//header("Location: http://insuranceplanet.biz/client/physics/");
+		//die;
+		$out .= 'This is not Admin';
+	}
+	
+	return $out;
+}
+
+

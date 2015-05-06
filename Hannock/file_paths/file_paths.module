@@ -1,0 +1,69 @@
+<?php
+// $Id$
+
+
+function file_paths_perm() 
+{
+	return array('list file_paths');
+}
+
+
+function file_paths_menu() 
+{
+	$items = array();
+	$items['admin/build/file_paths'] = array(
+		'title' => 'Manage File Paths',
+		'description' => t('Configure Images and Files Paths'),
+		'page callback' => 'file_paths_admin_display',
+		'access arguments' => array('administer file_paths'),
+		'file' => 'file_paths.admin.inc',
+	);
+	$items['admin/build/file_paths/list'] = array(
+		'title' => 'List',
+		'type' => MENU_DEFAULT_LOCAL_TASK,
+		'weight' => -10,
+	);
+	$items['admin/build/file_paths/%file_paths/configure'] = array(
+    	'title' => 'Configure Files Paths',
+    	'page callback' => 'drupal_get_form',
+    	'page arguments' => array('file_paths_admin_configure', 3),
+    	'access arguments' => array('administer file_paths'),
+    	'type' => MENU_CALLBACK,
+    	'file' => 'file_paths.admin.inc',
+  	);
+	return $items;
+}
+
+/*
+	Get ALL's
+*/
+function file_paths_load($array = array()) 
+{
+  
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('fid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'fid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  $path = db_fetch_object(db_query('SELECT * FROM {file_paths} WHERE '. implode(' AND ', $query), $params));
+  return $path;
+}
+
+
+
+

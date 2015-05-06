@@ -1,0 +1,5 @@
+; $Id$
+name = "right_logo"
+description = Shows right Logo on Main Page.
+package = Hannock
+core = 6.x

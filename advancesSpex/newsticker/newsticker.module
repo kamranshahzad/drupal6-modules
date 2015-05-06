@@ -1,0 +1,143 @@
+<?php
+// $Id$
+
+/*
+function newsticker_init()
+{
+   	$moPath =  drupal_get_path('module', 'newsticker');
+	drupal_add_js($moPath.'/js/jquery.innerfade.js');
+	drupal_add_css($moPath .'/css/jq_fade.css');
+
+}*/
+ 
+function newsticker_menu() {
+  $items = array();
+  $items['admin/build/newsticker'] = array(
+    'title' => 'NewsTicker',
+    'description' => t('This will display on All Pages'),
+    'page callback' => 'newsticker_display',
+    'access arguments' => array('administer newsticker'),
+    'file' => 'newsticker.admin.inc',
+  );
+  $items['admin/build/newsticker/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/newsticker/add'] = array(
+    'title' => 'Add News',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('newsticker_configure', NULL, 'add'),
+    'access arguments' => array('administer newsticker'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'newsticker.admin.inc',
+  );
+  $items['admin/build/newsticker/%newsticker/configure'] = array(
+    'title' => 'Configure News',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('newsticker_configure', 3),
+    'access arguments' => array('administer newsticker'),
+    'type' => MENU_CALLBACK,
+    'file' => 'newsticker.admin.inc',
+  );
+  $items['admin/build/newsticker/%newsticker/delete'] = array(
+    'title' => 'Delete News',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('newsticker_delete', 3),
+    'access arguments' => array('administer newsticker'),
+    'type' => MENU_CALLBACK,
+    'file' => 'newsticker.admin.inc',
+  );
+  $items['admin/build/newsticker/%newsticker/disable'] = array(
+    'title' => 'Disables News',
+    'page callback' => 'newsticker_disable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer newsticker'),
+    'type' => MENU_CALLBACK,
+    'file' => 'newsticker.admin.inc',
+  );
+  $items['admin/build/newsticker/%newsticker/enable'] = array(
+    'title' => 'Enables News',
+    'page callback' => 'newsticker_enable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer newsticker'),
+    'type' => MENU_CALLBACK,
+    'file' => 'newsticker.admin.inc',
+  );
+
+  return $items;
+}
+
+function newsticker_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('nid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'nid' || $key == 'status' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $news = db_fetch_object(db_query('SELECT * FROM {newsticker} WHERE '. implode(' AND ', $query), $params));
+  return $news;
+}
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////    Starts Block Here 
+ 
+ 
+function newsticker_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show News Ticker on Footer');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = newsticker_html();
+						return $blocks;
+	}
+}
+
+function newsticker_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+
+		$out = '';
+		$temp = '';
+		$result = db_query("SELECT * FROM newsticker");
+		
+/*		$out .= '<ul id="news">';
+		while($row = db_fetch_object($result))
+		{
+			$out .= '<li>'.$row->des.'</li> ';
+		}
+		$out .= '</ul> ';*/
+		
+		while($row = db_fetch_object($result))
+		{
+			$temp .= $row->des .'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; 
+			
+		}
+		$out .= '<marquee scrollamount="2">'.$temp.'</marquee>';
+		
+		return $out;
+}

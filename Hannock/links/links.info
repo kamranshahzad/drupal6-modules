@@ -1,0 +1,5 @@
+; $Id$
+name = "links"
+description = Shows links on Main Page.
+package = Hannock
+core = 6.x

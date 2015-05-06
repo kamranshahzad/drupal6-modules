@@ -1,0 +1,146 @@
+<?php
+// $Id$
+
+
+function documents_init()
+{
+    $moPath =  drupal_get_path('module', 'documents');
+	drupal_add_css($moPath.'/shadowbox/shadowbox.css');
+	drupal_add_js($moPath.'/shadowbox/shadowbox.js');
+}
+
+
+function documents_menu() {
+  $items = array();
+  $items['admin/build/documents'] = array(
+    'title' => 'Documents',
+    'description' => t('Configure Documents'),
+    'page callback' => 'documents_admin_display',
+    'access arguments' => array('administer documents'),
+    'file' => 'documents.admin.inc',
+  );
+  $items['admin/build/documents/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/documents/add'] = array(
+    'title' => 'Upload Documents',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('documents_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer documents'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'documents.admin.inc',
+  );
+  $items['admin/build/documents/%documents/configure'] = array(
+    'title' => 'Configure Links',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('documents_admin_configure', 3),
+    'access arguments' => array('administer documents'),
+    'type' => MENU_CALLBACK,
+    'file' => 'documents.admin.inc',
+  );
+  $items['admin/build/documents/%documents/delete'] = array(
+    'title' => 'Delete Documents',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('documents_admin_delete', 3),
+    'access arguments' => array('administer documents'),
+    'type' => MENU_CALLBACK,
+    'file' => 'documents.admin.inc',
+  );
+  $items['content/documents/display'] = array(              
+					'page callback' => 'documents_list_display',
+					'access arguments' => array('access content'),
+					'type' => MENU_CALLBACK,
+					'file' => 'documents.content.inc',
+	);
+  return $items;
+}
+
+
+/*
+	Navigation hook_load
+*/
+
+function documents_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('did' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'did' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $doc = db_fetch_object(db_query('SELECT * FROM {documents} WHERE '. implode(' AND ', $query), $params));
+  return $doc;
+}
+
+
+
+function documents_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Documents Links on Footer');
+						return $blocks;
+				case 'view':
+						$blocks['content'] =documents_html();
+						return $blocks;
+	}
+}
+
+function documents_html()
+{
+		$path = drupal_get_path('theme', 'hannock').'/images/';
+		//drupal_add_js($path.'/jquery.innerfade.js');
+  		//drupal_add_css($path .'/linkbox.css');
+		$record = 1;
+		$result = db_query("SELECT * FROM documents ORDER BY did DESC");
+		$count = db_result(db_query("SELECT COUNT(*) FROM {documents} "));
+		
+		$btImage = $path . 'btn-more-links.gif';
+		$options = array(
+              'attributes' => array(),
+              'html' => TRUE,
+        );  
+			
+		$out = '';
+		
+		
+		$out .= '<div class=" bottomlinks-innercontainer-02-documents-list">';
+		$out .= '<ul>';
+		while ($row = db_fetch_object($result)) 
+		{
+			if($record < 5)
+			{
+				$file = "'".$row->filename."'";
+				$out .= '<li><a href="javascript:displayDocuments('.$file.')">'.$row->title.'</a></li>';
+				$record++;
+			}
+		}
+		$out .= '</ul>';
+		$out .= '</div>';
+		if($count > 4)
+		{
+			$out .= '<div style="text-align:center;">'.l('<img src="'.$btImage.'" alt="test"/>', 'content/documents/display', $options).'</div>';
+		}
+		else
+		{
+			$out .= '<div style="text-align:center;"></div>';
+		}
+		return $out;
+}

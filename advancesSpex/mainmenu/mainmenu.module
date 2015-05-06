@@ -1,0 +1,132 @@
+<?php
+// $Id$
+
+
+/*
+function mainmenu_init()
+{
+		$mPath = drupal_get_path('module', 'mainmenu');
+		drupal_add_js($mPath.'/js/jquery.droppy.js');
+		drupal_add_css($mPath.'/css/droppy.css');
+}
+
+*/
+
+
+function mainmenu_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Main Menus on Pages');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = mainmenu_html();
+						return $blocks;
+	}
+}
+
+function mainmenu_html()
+{
+		global $base_url;
+		global $user;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		$mirrorPath = 'http://advancespex.com/mirror/virtual-mirror.html';
+		
+
+	
+		$out = '';
+		
+		
+		$out .=  '<div class="menus">';
+		$out .=  '<ul id="nav">';
+      	$out .=  '<li>'.l('Home', $base_url).'</li>';
+      
+      	$out .=  '<li>'.l('Product', 'catalog').'';
+		$out .=  '<ul>';
+		$out .=  '<li>'.l('Glasses', 'node/10').'</li>';
+		$out .=  '<li>'.l('Sunglasses', 'node/11').'</li>';
+		$out .=  '<li>'.l('Frames', 'node/12').'</li>';
+		$out .=  '<li>'.l('Accessories', 'node/13').'</li>';
+		$out .=  '<li>'.l('Best Sellers', 'node/14').'</li>';
+		$out .=  '<li>'.l('Latest/Hot Deals', 'node/15').'</li>';
+		$out .=  '<li>'.l('Search', 'node/16').'</li>';
+		$out .=  '<li>'.l('Reglazing', 'node/17').'</li>';
+		$out .=  '</ul>';	  
+	  	$out .=  '</li>';
+     
+      	$out .=  '<li>'.l('How To', 'node/18').'';
+	  	$out .=  '<ul>';
+		$out .=  '<li>'.l('Buy Glasses Online', 'node/25').'</li>';
+		$out .=  '<li>'.l('Buying Guide 1 2 3', 'node/29').'</li>';
+		$out .=  '<li>'.l('Fitting', 'node/17').'</li>';
+		$out .=  '<li>'.l('Mirror', 'node/18').'</li>';
+		$out .=  '<li>'.l('Choose the frame for your face', 'node/20').'</li>';
+		$out .=  '<li>'.l('Reading Your Prescription', 'node/21').'</li>';
+		$out .=  '</ul>';
+	  	$out .=  '</li>';
+    
+      	$out .=  '<li>'.l('Customer Service', 'node/23').'';
+	  	$out .=  '<ul>';
+		$out .=  '<li>'.l('Help to Choose Your Glasses', 'node/23').'</li>';
+		$out .=  '<li>'.l('Frequently Asked Questions', 'node/24').'</li>';
+		$out .=  '<li>'.l('Your Prescription', 'node/26').'</li>';
+		$out .=  '<li>'.l('Guarantee', 'node/27').'</li>';
+		$out .=  '<li>'.l('Delivery', 'node/28').'</li>';
+		$out .=  '<li>'.l('Terms and Conditions', 'node/30').'</li>';
+		$out .=  '<li>'.l('Privacy Policy', 'node/31').'</li>';
+		$out .=  '<li>'.l('Testimonials', 'node/32').'</li>';
+		$out .=  '<li>'.l('Advancespex Blog', 'node/33').'</li>';
+		$out .=  '</ul>';	
+	  	$out .=  '</li>';
+      
+      	$out .=  '<li>'.l('About Us', 'node/2').'';
+	  	$out .=  '<ul>';
+		$out .=  '<li>'.l('Who are we', 'node/3').'</li>';
+		$out .=  '<li>'.l('Why Us', 'node/4').'</li>';
+		$out .=  '<li>'.l('Contact Us', 'node/5').'</li>';
+		$out .=  '<li>'.l('Affiliations', 'node/6').'</li>';
+		$out .=  '<li>'.l('Pop Video', 'node/7').'</li>';
+		$out .=  '<li>'.l('Model Search', 'node/8').'</li>';
+		$out .=  '<li>'.l('Tell aFriend', 'node/9').'</li>';
+		$out .=  '</ul>';
+	  	$out .=  '</li>';
+      	
+		
+		/*Flag*/
+		$out .=  '<li>'.l('Order', 'node/34').'';
+	  	$out .=  '<ul>';
+		$out .=  '<li>'.l('Payment', 'node/19').'</li>';	
+		$out .=  '</ul>';
+	  	$out .=  '</li>';
+		/* Ends Flag*/
+     
+      	$out .=  '<li>'.l('Member Area', 'user').'';
+	  	$out .=  '<ul>';
+		$out .=  '<li>'.l('Register', 'user/register').'</li>';
+		$out .=  '<li>'.l('Upload Music Video', 'node/36').'</li>';
+		$out .=  '<li>'.l('Model Search', 'node/37').'</li>';
+		$out .=  '<li>'.l('Be the Next Advancespex model', 'node/38').'</li>';
+		$out .=  '</ul>';
+	  	$out .=  '</li>';     
+    	$out .=  '</ul>';
+    	$out .=  '<div class="clear"></div>';
+  		$out .=  '</div>';
+		
+		// 2nd Div
+		$out .=  '<div class="link"><div class="link1"><a href="'.$mirrorPath.'" target="_blank"><img src="'.$tPath.'menu-virtualmirror.jpg" alt="My Mirror" width="124" height="34" border="0" /></a></div><div class="link2"><a href="?q=user">My account</a> | ';
+		if($user->uid )
+		{
+			$out .= l('Logout' , 'logout');
+			$out .= '| <a href="?q=wishlist"><img src="'.$tPath.'wishlist-btn.jpg" alt="Wishlist" width="16" height="15" border="0" title="Your Wishlist"/></a>';
+		}
+		else
+		{
+			$out .= '<a href="?q=user">Login</a>';
+		}
+		$out .= ' | <a href="?q=cart"><img src="'.$tPath.'cart-btn.gif" alt="Basket" width="14" height="12" border="0" title="Your Shopping Cart"/></a></div>';
+		$out .=  '<div class="clear"></div>';
+		$out .=  '</div>';
+  		$out .=  '<div class="clear"></div>';
+
+		return $out;
+}

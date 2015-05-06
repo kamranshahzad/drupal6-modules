@@ -1,0 +1,5 @@
+; $Id$
+name = "tellfriend"
+description = Tell a Friends.
+package = Advanced
+core = 6.x

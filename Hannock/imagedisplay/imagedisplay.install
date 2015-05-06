@@ -1,0 +1,50 @@
+<?php
+// $Id: corner.install,v 1.4 2009/01/06 21:45:19 kirie Exp $
+
+
+
+function imagedisplay_install() {
+  $result = drupal_install_schema('imagedisplay');
+
+
+  if ($result[0]['success']) {
+    $sql = "INSERT INTO {imagedisplay} ( imagename )";
+    $sql .= " VALUES ('%s' )";
+    db_query($sql, 'Contact Us' );
+	
+	$sql = "INSERT INTO {imagedisplay} ( imagename )";
+    $sql .= " VALUES ('%s' )";
+    db_query($sql, 'News Image' );
+	
+	$sql = "INSERT INTO {imagedisplay} ( imagename )";
+    $sql .= " VALUES ('%s' )";
+    db_query($sql, 'School Image' );
+	
+	drupal_set_message("Imagedisplay Table Created Successfully");
+  }
+}
+
+
+
+
+function imagedisplay_uninstall() {
+  drupal_uninstall_schema('imagedisplay');
+}
+
+
+function imagedisplay_schema() {
+  $schema['imagedisplay'] = array(
+    'description' => t('Stores Navigations'),
+    'fields' => array(
+      'pid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+	  'imagename' => array('type' => 'text', 'not null' => FALSE),
+	),
+	'primary key' => array('pid'),
+  );
+
+  return $schema;
+}

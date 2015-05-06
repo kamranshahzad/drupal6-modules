@@ -1,0 +1,197 @@
+<?php
+// $Id$
+
+
+function categories_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Top Categories on all pages');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = categories_html();
+						return $blocks;
+	}
+}
+
+
+function categories_html()
+{
+	global $base_url;
+	$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+	$out = '';
+	
+	$mPath = drupal_get_path('module', 'categories');
+	drupal_add_js($mPath.'/menu.js');
+	drupal_add_css($mPath.'/right-menu-style.css');
+
+
+	$out .= '<div class="categoriesCon">';
+    $out .= '<div><img src="'.$tPath.'categories-top.jpg" alt="Categories" width="205" height="75"/></div>';
+    $out .= '<div class="midbg">';
+    $out .= '<ul id="menu1" class="menu">';
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Brand</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l("Joia" , 'catalog/2').'</li>';
+	$out .= '<li>'.l('Impulse' , 'catalog/3').'</li>';
+	$out .= '<li>'.l('Metz' , 'catalog/4').'</li>';
+	$out .= '<li>'.l('Visage' , 'catalog/9').'</li>';
+	$out .= '<li>'.l('Ferucci MMIII' , 'catalog/8').'</li>';
+	$out .= '<li>'.l('Ferucci' , 'catalog/11').'</li>';
+	$out .= '<li>'.l('Visage Flexi Frames' , 'catalog/16').'</li>';
+	$out .= '<li>'.l('Ferucci Nickel Titanium' , 'catalog/17').'</li>';
+	$out .= '<li>'.l('Ethix' , 'catalog/0').'</li>';
+	$out .= '<li>'.l('Zuma' , 'catalog/1').'</li>';
+	$out .= '<li>'.l('Rimless Titanium' , 'catalog/0').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Gender</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Male' , 'glassesfor/mens').'</li>';
+	$out .= '<li>'.l('Female' , 'glassesfor/womens').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+
+	
+	
+	$out .= '<li>';
+	$out .= l('Frames/Glasses' , 'catalog/0');
+	$out .= '</li>';
+
+		
+	$out .= '<li>';
+	$out .= '<a href="#">Sunglasses</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Bloc' , 'catalog/6').'</li>';
+	$out .= '<li>'.l('Bolle' , 'catalog/6').'</li>';
+	$out .= '<li>'.l('Serengeti' , 'catalog/7').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Price</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Less then '.variable_get('uc_currency_sign', '$').'50' , 'filtercontents/1/0').'</li>';
+	$out .= '<li>'.l(variable_get('uc_currency_sign', '$').'51 to '.variable_get('uc_currency_sign', '$').'99' , 'filtercontents/1/1').'</li>';
+	$out .= '<li>'.l(variable_get('uc_currency_sign', '$').'100 to '.variable_get('uc_currency_sign', '$').'149' , 'filtercontents/1/2').'</li>';
+	$out .= '<li>'.l(variable_get('uc_currency_sign', '$').'150 to '.variable_get('uc_currency_sign', '$').'200' , 'filtercontents/1/3').'</li>';
+	$out .= '<li>'.l('More then '.variable_get('uc_currency_sign', '$').'200' , 'filtercontents/1/4').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+
+	$out .= '<li>';
+	$out .= '<a href="#">Material</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Plastic' , 'filtercontents/2/0').'</li>';
+	$out .= '<li>'.l('Metal' , 'filtercontents/2/1').'</li>';
+	$out .= '<li>'.l('Titanium' , 'filtercontents/2/2').'</li>';
+	$out .= '<li>'.l('Flexiframe (Visage)' , 'filtercontents/2/3').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Children</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Bloc Kids' , 'catalog/6').'</li>';
+	$out .= '<li>'.l('Bolle Junior' , 'catalog/5').'</li>';
+	$out .= '<li>'.l('Ethix Kids Frames' , 'catalog/0').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Style</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Classic' , 'filtercontents/3/0').'</li>';
+	$out .= '<li>'.l('Designer' , 'filtercontents/3/1').'</li>';
+	$out .= '<li>'.l('Fashionable' , 'filtercontents/3/2').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Colour</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Metallic' , 'filtercontents/4/0').'</li>';
+	$out .= '<li>'.l('Red' , 'filtercontents/4/1').'</li>';
+	$out .= '<li>'.l('Blue' , 'filtercontents/4/2').'</li>';
+	$out .= '<li>'.l('Green' , 'filtercontents/4/3').'</li>';
+	$out .= '<li>'.l('Yellow' , 'filtercontents/4/4').'</li>';
+	$out .= '<li>'.l('White' , 'filtercontents/4/5').'</li>';
+	$out .= '<li>'.l('Black' , 'filtercontents/4/6').'</li>';
+	$out .= '<li>'.l('Brown' , 'filtercontents/4/7').'</li>';
+	$out .= '<li>'.l('Pink' , 'filtercontents/4/8').'</li>';
+	$out .= '<li>'.l('Purple' , 'filtercontents/4/9').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Rimless</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Zuma' , 'catalog/0').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	$out .= '<li>';
+	$out .= l('Accessories' , 'catalog/0');
+	$out .= '</li>';
+	
+	$out .= '<li>';
+	$out .= '<a href="#">Best Sellers</a>';
+	$out .= '<ul>';
+	$out .= '<li>'.l('Serengetti' , 'catalog/7').'</li>';
+	$out .= '<li>'.l('Zuma' , 'catalog/1').'</li>';
+	$out .= '<li>'.l('Ferucci' , 'catalog/13').'</li>';
+	$out .= '</ul>';
+	$out .= '</li>';
+	
+	
+	// Ends of Options
+	$out .= '</ul>';
+    $out .= '</div>';
+    $out .= '<div><img src="'.$tPath.'categories-new-bottom.jpg" alt="" /></div>';
+  	$out .= '</div>';
+	
+	return $out;
+}
+
+/*function categories_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+		
+		$catelogPaths = array ( 'catalog/1', 'catalog/0','catalog/0','catalog/0','catalog/5','catalog/0','catalog/7','catalog/8','catalog/10','catalog/11'  ,'catalog/0');
+		//								1			2			3				4			5			6			8			9			10			11				12
+		$sql = 'SELECT `term_data`.*, `term_hierarchy`.* FROM `term_hierarchy`, `term_data` WHERE (term_data.tid=term_hierarchy.tid)';
+		$result = db_query($sql);
+		
+		
+		$out .= '<div class="categoriesCon">';
+		$out .= '<div><img src="'.$tPath.'categories-top.jpg" alt="Categories" width="205" height="75"/></div>';
+		$out .= '<div class="midbg">';
+		$out .= '<ul>';
+		$count = 0;
+		while($row = db_fetch_object($result))
+		{
+			if($count < 12){
+			$out .= '<li>'.l($row->name , $catelogPaths[$count]).'</li>';
+			}
+			$count++;
+		}
+		$out .= '</ul>';
+		$out .= '</div>';
+		$out .= '<div><img src="'.$tPath.'categories-new-bottom.jpg" alt="" /></div>';
+		$out .= '</div>';
+	
+		
+		
+		return $out;
+}
+*/

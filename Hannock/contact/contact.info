@@ -1,0 +1,5 @@
+; $Id$
+name = "contact"
+description = Shows Hannock Contact Us Page.
+package = Hannock
+core = 6.x

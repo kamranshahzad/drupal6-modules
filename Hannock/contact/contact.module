@@ -1,0 +1,175 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+function contact_menu() 
+{
+	 
+	 $items = array();
+	 $items['admin/build/contact'] = array(
+		'title' => 'Contact',
+		'description' => t('Configure Contact Us, including what they are and where they appear on the site.'),
+		'page callback' => 'contact_admin_display',
+		'access arguments' => array('administer contact'),
+		'file' => 'contact.admin.inc',
+	  );
+	  $items['admin/build/contact/list'] = array(
+		'title' => 'List',
+		'type' => MENU_DEFAULT_LOCAL_TASK,
+		'weight' => -10,
+	  );
+	  $items['admin/build/contact/%contact/configure'] = array(
+		'title' => 'Configure contact',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('contact_admin_configure', 3),
+		'access arguments' => array('administer contact'),
+		'type' => MENU_CALLBACK,
+		'file' => 'contact.admin.inc',
+	  );
+	  $items['admin/build/contact/%contact/disable'] = array(
+		'title' => 'Disables contact',
+		'page callback' => 'contact_admin_disable',
+		'page arguments' => array(3),
+		'access arguments' => array('administer contact'),
+		'type' => MENU_CALLBACK,
+		'file' => 'contact.admin.inc',
+	  );
+	  $items['admin/build/contact/%contact/enable'] = array(
+		'title' => 'Enables contact',
+		'page callback' => 'contact_admin_enable',
+		'page arguments' => array(3),
+		'access arguments' => array('administer contact'),
+		'type' => MENU_CALLBACK,
+		'file' => 'contact.admin.inc',
+	  );
+	  $items['content/contact/display'] = array(
+		'title' => 'Contact Us',
+		'page callback' => 'contact_display',
+		'access arguments' => array('access content'),
+	  );
+	  return $items;
+}
+
+
+function contact_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('cid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'cid') {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $faq  = db_fetch_object(db_query('SELECT * FROM {contact} WHERE '. implode(' AND ', $query), $params));
+  return $faq;
+}
+
+
+
+function contact_display() 
+{
+	$out = '';
+
+	$path = drupal_get_path('module', 'contact').'/';
+	
+	
+	// Start of HTML
+	$path = 'sites/default/files/'.get_contact_path().'/';
+	$image = $path . get_contact_name();
+	
+	
+	$result = db_query("SELECT * FROM {contact}");
+	$text = array();
+	$state =array();
+	$pointer = 1;
+	while ($row = db_fetch_object($result)) 
+	{
+          $text[$pointer] = $row->contact_text;
+		  $state[$pointer] = $row->status;
+		  $pointer++;
+	}
+	
+	
+	if($state[2] == 1)
+	{
+		$out .='<p class="font-size-14px"><strong>'.$text[2].'</strong></p>';
+	}
+  	$out .='<ul type="disc">';
+   	$out .='<li style="list-style:none;">';
+    if($state[13] == 1)
+	{
+		$out .='<img src="'.$image.'" width="276" height="189" class="imgright" />';
+	}
+   	$out .='</li>';
+  	$out .='</ul>';
+  	$out .='<br>';
+	if($state[3] == 1)
+	{
+			$out .='<h2>'.$text[3].'</h2>';
+			$out .='<p style="width:550px;">';
+			$out .= $text[4];
+			$out .='</p>';
+	}
+	if($state[5] == 1)
+	{
+			$out .='<h2>'.$text[5].'</h2>';
+			$out .='<p style="width:550px;">';
+			$out .= $text[6];
+			$out .='</p>';
+	}
+	if($state[7] == 1)
+	{
+			$out .='<h2>'.$text[7].'</h2>';
+			$out .='<p style="width:550px;">';
+			$out .= $text[8];
+			$out .='</p>';
+	}
+	if($state[9] == 1)
+	{
+			$out .='<h2>'.$text[9].'</h2>';
+			$out .='<p style="width:550px;">';
+			$out .= $text[10];
+			$out .='</p>';
+	}
+	if($state[11] == 1)
+	{
+			$out .='<h2>'.$text[11].'</h2>';
+			$out .='<p style="width:550px;">';
+			$out .= $text[12];
+			$out .='</p>';
+	}
+	return $out;
+}
+
+function get_contact_path()
+{
+	$result = db_query("SELECT * FROM file_paths WHERE fid='5'");
+	$row = db_fetch_object($result);
+	return $row->text_path;
+}
+
+function get_contact_name()
+{
+	$result = db_query("SELECT * FROM {imagedisplay} WHERE pid='1'");
+	$row = db_fetch_object($result);
+	return $row->imagename;
+}

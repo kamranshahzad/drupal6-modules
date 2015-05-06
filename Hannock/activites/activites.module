@@ -1,0 +1,117 @@
+<?php
+// $Id: my.module,v 1.5 2009/01/11 13:49:11 kirie Exp $
+
+
+function activites_perm() {
+  return array('administer activites', 'use PHP for my visibility');
+}
+
+
+function activites_menu() {
+  $items = array();
+  $items['admin/build/activites'] = array(
+    'title' => 'Activites',
+    'description' => t('Configure activites, including what they are and where they appear on the site.'),
+    'page callback' => 'activites_admin_display',
+    'access arguments' => array('administer activites'),
+    'file' => 'activites.admin.inc',
+  );
+  $items['admin/build/activites/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/activites/add'] = array(
+    'title' => 'Add Activites',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('activites_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer activites'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'activites.admin.inc',
+  );
+  $items['admin/build/activites/%activites/configure'] = array(
+    'title' => 'Configure Activites',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('activites_admin_configure', 3),
+    'access arguments' => array('administer activites'),
+    'type' => MENU_CALLBACK,
+    'file' => 'activites.admin.inc',
+  );
+  $items['admin/build/activites/%activites/delete'] = array(
+    'title' => 'Delete Activites',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('activites_admin_delete', 3),
+    'access arguments' => array('administer activites'),
+    'type' => MENU_CALLBACK,
+    'file' => 'activites.admin.inc',
+  );
+  
+    $items['conetent/activites/%/display'] = array(
+			'page callback' => 'activites_list_display',
+			'page arguments' => array(2),
+			'access arguments' => array('access content'),
+			'type' => MENU_CALLBACK,
+			'file' => 'activites.content.inc',
+	);
+  return $items;
+}
+
+
+function activites_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('aid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'aid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $act = db_fetch_object(db_query('SELECT * FROM {activites} WHERE '. implode(' AND ', $query), $params));
+  return $act;
+}
+
+
+
+function activites_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show activites Links on Footer');
+						return $blocks;
+				case 'view':
+						$blocks['content'] =	activites_html();
+						return $blocks;
+	}
+}
+
+function activites_html()
+{
+		$path = drupal_get_path('theme', 'hannock').'/images/';
+		//drupal_add_js($path.'/jquery.innerfade.js');
+  		//drupal_add_css($path .'/linkbox.css');
+		$result = db_query("SELECT * FROM activites");
+		$out = '';
+		$out .= '<div class="bottomlinks-innercontainer-04-activities-list">';
+		$out .= '<ul>';
+		while($row = db_fetch_object($result) )
+		{
+			$out .= '<li>'.l($row->title, 'conetent/activites/'.$row->aid.'/display').'</li>';
+		}
+		$out .= '</ul>';
+		$out .= '</div>';
+		return $out;
+}

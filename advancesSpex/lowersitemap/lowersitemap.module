@@ -1,0 +1,61 @@
+<?php
+// $Id$
+
+
+function lowersitemap_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Lower Site Map.');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = lowersitemap_html();
+						return $blocks;
+	}
+}
+
+function lowersitemap_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+
+		$out .= '<div class="categoriesLeft">Categories</div>';
+		$out .= '<div style="float:left; margin:0px auto; width:800px;">';
+		$out .= '<div class="categoriesRight"  style="padding-top:17px;">';
+		$out .= '<ul>';
+		
+		
+		$out .= '<li style="width:70px;">'.l('Zuma' , 'catalog/0').'</li>';
+		$out .= '<li style="width:70px;">'.l('Joia' , 'catalog/0').'</li>';
+		$out .= '<li style="width:70px;">'.l('Impulse' , 'catalog/0').'</li>';
+		$out .= '<li style="width:70px;">'.l('Metz' , 'catalog/0').'</li>';
+		$out .= '<li style="width:120px;">'.l('Bloc & Bloc Juniors' , 'catalog/0').'</li>';
+		$out .= '<li style="width:120px;">'.l('Bolle & Bolle Kids' , 'catalog/27').'</li>';
+		$out .= '<li style="width:70px;">'.l('Serengeti' , 'catalog/0').'</li>';
+		$out .= '<li>'.l('Ferucci Solaire & Metz Sunglasses' , 'catalog/0').'</li>';
+		$out .= '</ul>';
+		$out .= '<div class="clear"></div>';
+		$out .= '</div>';
+		$out .= '<div class="categoriesRight">';
+		$out .= '<ul>';
+		
+		
+		$out .= '<li style="width:70px;">'.l('MMIII' , 'catalog/30').'</li>';
+		$out .= '<li style="width:70px;">'.l('Ferucci' , 'catalog/32').'</li>';
+		$out .= '<li style="width:70px;">'.l('Ethix' , 'catalog/33').'</li>';
+		$out .= '<li style="width:70px;">'.l('Visage' , 'catalog/34').'</li>';
+		$out .= '<li style="width:70px;">'.l('Visage Elite' , 'catalog/24').'</li>';
+		$out .= '<li style="width:70px;">'.l('Visage Flexi' , 'catalog/36').'</li>';
+		$out .= '<li>'.l('Visage Prescription Sunglasses' , 'catalog/31').'</li>';
+		$out .= '<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>';
+		$out .= '</ul>';
+		$out .= '<div class="clear"></div>';
+		$out .= '</div>';
+		$out .= '<div class="clear"></div>';
+		$out .= '</div>';
+		$out .= '<div class="clear"></div>';
+		
+		return $out;
+}

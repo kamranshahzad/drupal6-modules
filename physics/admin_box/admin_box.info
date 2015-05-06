@@ -1,0 +1,11 @@
+; $Id: ml_locations.info,v 1.2 2008/12/15 15:59:42 kirie Exp $
+name = "admin_box"
+description = "Shows and configure Adminstrator Icons."
+core = 6.x
+
+
+; Information added by drupal.org packaging script on 2009-03-10
+version = "6.x-2.0"
+core = "6.x"
+package = physics
+datestamp = "1236693915"

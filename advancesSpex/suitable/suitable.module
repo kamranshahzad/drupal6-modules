@@ -1,0 +1,106 @@
+<?php
+// $Id$
+
+
+
+function suitable_menu() {
+  $items = array();
+    $items['content/view/%/result'] = array(
+   		    'title' => '',
+			'page callback' => 'suitable_display',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+  );
+   return $items;
+}
+
+
+
+function suitable_display($option)
+{
+	$searchString = 'There is not Product Found , please try again';
+	global $base_url;
+	$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+	$out = '';
+
+	
+	$out .= '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td width="631" align="left" valign="middle" class="txt-georgia"><strong> <span class="tahoma-17">'.setMessage($option).'</span></strong></td>';
+    $out .= '<td width="40" align="center" valign="middle"><img src="'.$tPath.'arrow-gra-white.jpg" width="23" height="24" /></td>';
+    $out .= '</tr>';
+    $out .= '</table></td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top" background="'.$tPath.'separator-dash.jpg">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top" class="arial-12-666666"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td align="center" valign="top"><img src="'.$tPath.'search-glasses-pack.jpg" alt="" width="513" height="94" /></td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td>';
+                    
+					
+                    $out .= '<table width="500" border="0" cellspacing="0" cellpadding="0">';
+                    $out .= '<tr>';
+                    $out .= '<td width="180" align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+                    $out .= '<tr>';
+                    $out .= '<td width="26" align="left" valign="top"><img src="'.$tPath.'product-search-bg1.jpg" alt="" width="26" height="37" /></td>';
+                    $out .= '<td background="'.$tPath.'product-search-bg2.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+                    $out .= '<tr>';
+                    $out .= '<td align="left" valign="middle" class="text-tahoma-14-bold"><a href="?q=catalog/33">Titanium</a></td>';
+                    $out .= '</tr>';
+                    $out .= '</table></td>';
+                    $out .= '<td width="10" align="left"><img src="'.$tPath.'product-search-bg3.jpg" alt="" width="10" height="37" /></td>';
+                    $out .= '</tr>';
+                    $out .= '</table></td>';
+                    $out .= '<td><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+                    $out .= '<tr>';
+                    $out .= '<td width="20">&nbsp;</td>';
+                    $out .= '<td align="left" valign="top">1 Product in Titanium </td>';
+                    $out .= '</tr>';
+                    $out .= '</table></td>';
+                    $out .= '</tr>';
+                    $out .= '</table>';
+
+                    
+	$out .= '</td>';
+    $out .= '</tr>';
+    $out .= '</table>';
+    $out .= '</td>';
+    $out .= '</tr>';
+    $out .= '</table>';
+    $out .= '</td>';
+    $out .= '</tr>';
+  	$out .= '</table>';
+  
+  
+	return $out;
+}
+
+
+function setMessage($id)
+{
+	$out = '';
+	switch($id)
+	{
+		case 1:
+				$out = 'For Mens';
+				break;
+		case 2:
+				$out = 'For Womens';
+				break;
+		case 3:
+				$out = 'Sunglasses';
+				break;		
+	}
+	return $out;
+}

@@ -1,0 +1,443 @@
+<?php
+// $Id$
+
+
+
+
+
+function olevel_menu()
+{
+	 $items = array();
+	 
+	// O-Level
+	$items['content/olevel/display'] = array(
+		'title' => 'O-Level Notes',
+		'page callback' => 'content_olevel_display',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+  	);
+	$items['olevel/list/%/notes'] = array(
+   		    'title' => '',
+			'page callback' => 'get_all_olevel_notes',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+    );
+	
+	//A-Level
+	$items['content/alevel/display'] = array(
+		'title' => 'A-Level Notes',
+		'page callback' => 'content_alevel_display',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+  	);
+	$items['alevel/list/%/notes'] = array(
+   		    'title' => '',
+			'page callback' => 'get_all_alevel_notes',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+    );
+	
+	return $items;
+}
+
+
+
+/*
+	    Display All O-Level Topics
+*/
+function content_olevel_display()
+{
+    global $user;
+	
+	$out = '';
+	
+	// Get User Info
+	$my_id = $user->uid;
+	$profile_field = 4;
+	$result = db_query("SELECT * FROM {profile_values} WHERE fid='$profile_field' AND uid='$my_id'");
+	$row = db_fetch_object($result);
+	
+	$result1 = db_query("SELECT * FROM {topics} WHERE cat ='0'");
+	
+	
+	
+	//User Check available Here
+	if($user->uid )
+	{
+		if($row->value == 'O-Level')
+		{
+	
+				$out .= '<table width="874" border="0" cellpadding="0" cellspacing="0">';
+				$out .= '<tr>';
+				$out .= '<td width="874" bgcolor="#CADFF0"><table width="100%" border="0" cellspacing="1" cellpadding="0">';
+				$out .= '<tr>';
+				$out .= '<td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+				$out .= '<tr>';
+				$out .= '<td height="35" align="right" class="txtblue14"><table width="860" border="0" cellspacing="0" cellpadding="0">';
+				$out .= '<tr>';
+				$out .= '<td width="279" align="left"><strong>Topic Name</strong></td>';
+				$out .= '<td width="566" align="left"><strong>Topic Description</strong></td>';
+				$out .= '</tr>';
+				$out .= '</table></td>';
+				$out .= '</tr>';
+				$out .= '<tr>';
+				$out .= '<td bgcolor="#FFFFFF">	';
+				
+				while($row1 = db_fetch_object($result1))
+				{
+					$out .= '<table width="100%" border="0" cellspacing="1" cellpadding="6">';
+					$out .= '<tr>';
+					$out .= '<td bgcolor="#ECF3F9"><table width="845" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td width="279" align="left">'.l($row1->title,'olevel/list/'.$row1->tid.'/notes').'</td>';
+					$out .= '<td width="566">'.$row1->des.'</td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '</table>';
+				}
+				$out .= '</td>';
+				$out .= '</tr>';
+				$out .= '</table></td>';
+				$out .= '</tr>';
+				$out .= '</table></td>';
+				$out .= '</tr>';
+				$out .= '</table>';
+		}
+		else
+		{
+			$out .= 'You are not allowed to Access O-Level';
+		}
+	}
+	else
+	{
+		drupal_goto('user', NULL,NULL);
+	}		
+	return $out;
+}
+
+
+/*
+    Display Topic-Related  Documents
+*/
+
+function get_all_olevel_notes($id)
+{
+	global $user;
+		// Get User Info
+	$my_id = $user->uid;
+	$profile_field = 4;
+	$result_admin = db_query("SELECT * FROM {profile_values} WHERE fid='$profile_field' AND uid='$my_id'");
+	$row_admin = db_fetch_object($result_admin);
+	
+	
+	$out = '';
+	
+	$imgOr1 = 'sites/all/themes/physics/images/word-Icon.gif';
+	$imgOr2 = 'sites/all/themes/physics/images/pdf-icon.gif';
+	$imgOr3 = 'sites/all/themes/physics/images/flv.gif';
+	$imgOr4 = 'sites/all/themes/physics/images/YouTube_1.gif';
+	
+	$imgDs1 = 'sites/all/themes/physics/images/word-Icon-d.gif';
+	$imgDs2 = 'sites/all/themes/physics/images/pdf-icon-d.gif';
+	$imgDs3 = 'sites/all/themes/physics/images/flv-d.gif';
+	$imgDs4 = 'sites/all/themes/physics/images/YouTube_2.gif';
+	
+	$result = db_query("SELECT * FROM {documents} WHERE tid='$id' ");
+	
+	
+	$site_url = 'http://insuranceplanet.biz/client/physics/sites/default/files/';
+
+	
+	$out .= '<h1>O-Level Notes</h1>';
+	$out .= '<table width="800">';
+	$out .= '<tr>';
+	$out .= '<td align="right">';
+	$out .= l('Back To Topics','content/olevel/display');
+	$out .= '<td>';
+	$out .= '</tr>';
+	$out .= '</table>';
+	
+	
+	
+	if($user->uid )
+	{
+		if($row_admin->value == 'O-Level')
+		{
+		      $out .= '<table width="874" border="0" cellpadding="0" cellspacing="0">';
+              $out .= '<tr>';
+              $out .= '<td width="874" bgcolor="#CADFF0">';
+              $out .= '<table width="100%" border="0" cellspacing="1" cellpadding="0">';
+              $out .= '<tr>';
+              $out .= '<td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+              $out .= '<tr>';
+              $out .= '<td height="35" align="right" class="txtblue14"><table width="860" border="0" cellspacing="0" cellpadding="0">';
+              $out .= '<tr>';
+              $out .= '<td width="872" align="left"><strong>'.get_topic_name($id).'</strong></td>';
+              $out .= '</tr>';
+              $out .= '</table></td>';
+              $out .= '</tr>';
+              $out .= '<tr>';
+              $out .= '<td bgcolor="#FFFFFF">';
+				
+				
+				$temp1 = '';
+				$temp2 = '';
+				$temp3 = '';
+				$temp4 = '';
+				while($row = db_fetch_object($result))
+				{
+					//if(see_note_files($row->file1)){$temp1 = $imgOr1;}else{ $temp1 = $imgDs1;}
+					if(see_note_files($row->file2)){$temp2 = $imgOr2;}else{ $temp2 = $imgDs2;}
+					if(see_note_files($row->file3)){$temp3 = $imgOr3;}else{ $temp3 = $imgDs3;}
+					if(see_note_files($row->file4)){$temp4 = $imgOr4;}else{ $temp4 = $imgDs4;}
+							
+					$out .= '<table width="100%" border="0" cellspacing="1" cellpadding="6">';
+					$out .= '<tr>';
+					$out .= '<td bgcolor="#ECF3F9"><table width="600" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td align="left" width="200">'.$row->title.' </td>';
+					$out .= '<td width="150"><table width="300" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					//File#1 
+					if(see_note_files($row->file1)){
+						$out .= '<td width="100" align="center"><a href="'.$site_url.'docs/'.$row->file1.'"><img src="'.$imgOr1.'" width="24" height="24" /></a></td>';
+					}else{
+						$out .= '<td width="100" align="center"><img src="'.$imgDs1.'" width="24" height="24" /></td>';
+					}
+					//File#2
+					if(see_note_files($row->file2)){
+						$out .= '<td width="100" align="center"><a href="'.$site_url.'docs/'.$row->file2.'"><img src="'.$imgOr2.'" width="24" height="24" /></a></td>';
+					}else{
+						$out .= '<td width="100" align="center"><img src="'.$imgDs2.'" width="24" height="24" /></td>';
+					}
+					//File#3
+					if(see_note_files($row->file3)){
+						$out .= '<td width="100" align="center"><a href="'.$site_url.'docs/'.$row->file3.'"><img src="'.$imgOr3.'" width="24" height="24" border="0"/></a></td>';
+					}else{
+						$out .= '<td width="100" align="center"><img src="'.$imgDs3.'" width="24" height="24" border="0"/></td>';
+					}
+					// Youtube URL # 4
+					if(see_note_files($row->file4)){
+						$out .= '<td width="100" align="center"><a href="?q=podcast/youtube/'.$row->ulink.'/display"><img src="'.$imgOr4.'" width="60" height="24" /></a> </td>';
+					}else{
+						$out .= '<td width="100" align="center"><img src="'.$imgDs4.'" width="60" height="24" /> </td>';
+					}
+					
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					//$out .= '<td width="180" align="left" bgcolor="#ECF3F9"> </td>';
+					//$out .= '<td width="180" align="left" bgcolor="#ECF3F9"> </td>';
+					$out .= '</tr>';
+					$out .= '</table>';
+				}// End of loop
+				
+				$out .= '</td>';
+                $out .= '</tr>';
+                $out .= '</table></td>';
+                $out .= '</tr>';
+                $out .= '</table>';
+                $out .= '</td>';
+              	$out .= '</tr>';
+            	$out .= '</table>';
+			}
+			else
+			{
+				$out .= 'You have not access of A-Level Notes';
+			}
+	}
+	else
+	{
+		drupal_goto('user', NULL,NULL);
+	}
+	
+	return $out;
+}
+
+
+
+
+
+/*
+	Common Functions
+*/
+
+function get_topic_name($id)
+{
+	$result = db_query("SELECT * FROM {topics} WHERE tid='$id'");
+	$row = db_fetch_object($result);
+	return $row->title;
+}
+
+function see_note_files($value)
+{
+	if(empty($value))
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////
+///////////////       HANDLE    A-Level Documents
+///////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*
+	    Display All O-Level Topics
+*/
+function content_alevel_display()
+{
+    global $user;
+	
+	$out = '';
+	
+	$my_id = $user->uid;
+	$profile_field = 4;
+	
+	// Get User Info
+	$result = db_query("SELECT * FROM {profile_values} WHERE fid='$profile_field' AND uid='$my_id'");
+	$row = db_fetch_object($result);
+	
+	$result1 = db_query("SELECT * FROM {topics} WHERE cat ='1'");
+	
+	
+	
+	//User Check available Here
+	if($user->uid )
+	{
+		if($row->value == 'A-Level')
+		{
+	
+				$out .= '<table width="874" border="0" cellpadding="0" cellspacing="0">';
+				$out .= '<tr>';
+				$out .= '<td width="874" bgcolor="#CADFF0"><table width="100%" border="0" cellspacing="1" cellpadding="0">';
+				$out .= '<tr>';
+				$out .= '<td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+				$out .= '<tr>';
+				$out .= '<td height="35" align="right" class="txtblue14"><table width="860" border="0" cellspacing="0" cellpadding="0">';
+				$out .= '<tr>';
+				$out .= '<td width="279" align="left"><strong>Topic Name</strong></td>';
+				$out .= '<td width="566" align="left"><strong>Topic Description</strong></td>';
+				$out .= '</tr>';
+				$out .= '</table></td>';
+				$out .= '</tr>';
+				$out .= '<tr>';
+				$out .= '<td bgcolor="#FFFFFF">	';
+				
+				while($row1 = db_fetch_object($result1))
+				{
+					$out .= '<table width="100%" border="0" cellspacing="1" cellpadding="6">';
+					$out .= '<tr>';
+					$out .= '<td bgcolor="#ECF3F9"><table width="845" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td width="279" align="left">'.l($row1->title,'olevel/list/'.$row1->tid.'/notes').'</td>';
+					$out .= '<td width="566">'.$row1->des.'</td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '</table>';
+				}
+				$out .= '</td>';
+				$out .= '</tr>';
+				$out .= '</table></td>';
+				$out .= '</tr>';
+				$out .= '</table></td>';
+				$out .= '</tr>';
+				$out .= '</table>';
+		}
+		else
+		{
+			$out .= 'You are not allowed to Access A-Level Notes';
+		}
+	}
+	else
+	{
+		drupal_goto('user', NULL,NULL);
+	}		
+	return $out;
+}
+
+
+/*
+    Display Topic-Related  Documents
+*/
+
+function get_all_alevel_notes($id)
+{
+	$out = '';
+	
+	$imgOr1 = 'sites/all/themes/physics/images/word-Icon.gif';
+	$imgOr2 = 'sites/all/themes/physics/images/pdf-icon.gif';
+	$imgOr3 = 'sites/all/themes/physics/images/flv.gif';
+	$imgDs1 = 'sites/all/themes/physics/images/word-Icon-d.gif';
+	$imgDs2 = 'sites/all/themes/physics/images/pdf-icon-d.gif';
+	$imgDs3 = 'sites/all/themes/physics/images/flv-d.gif';
+	
+	$result = db_query("SELECT * FROM {documents} WHERE tid='$id' ");
+	
+	
+	
+	
+	if($user->uid )
+	{
+		if($row->value == 'A-Level')
+		{
+					$out .= '<table  width="100%" border="0" cellspacing="1" cellpadding="6">';
+					$out .= '<tr>';
+					$out .= '<td><h1>'.get_topic_name($id).'</h1></td>';
+					$out .= '</tr>';
+					$out .= '</table>';
+					$temp1 = '';
+					$temp2 = '';
+					$temp3 = '';
+					
+					while($row = db_fetch_object($result))
+					{
+						if(see_note_files($row->file1)){$temp1 = $imgOr1;}else{ $temp1 = $imgDs1;}
+						if(see_note_files($row->file2)){$temp2 = $imgOr2;}else{ $temp2 = $imgDs2;}
+						if(see_note_files($row->file3)){$temp3 = $imgOr3;}else{ $temp3 = $imgDs3;}
+								
+						$out .= '<table width="100%" border="0" cellspacing="1" cellpadding="6">';
+						$out .= '<tr>';
+						$out .= '<td bgcolor="#ECF3F9"><table width="470" border="0" cellspacing="0" cellpadding="0">';
+						$out .= '<tr>';
+						$out .= '<td align="left">'.$row->title.' </td>';
+						$out .= '<td width="150"><table width="150" border="0" cellspacing="0" cellpadding="0">';
+						$out .= '<tr>';
+						$out .= '<td width="50" align="center"><img src="'.$temp1.'" width="24" height="24" /></td>';
+						$out .= '<td width="50" align="center"><img src="'.$temp2.'" width="24" height="24" /></td>';
+						$out .= '<td width="50" align="center"><a href="http://insuranceplanet.biz/client/physics/sites/default/files/docs/fairprocessing-primarylayer1.pdf"><img src="'.$temp3.'" width="24" height="24" border="0"/></a></td>';
+						$out .= '</tr>';
+						$out .= '</table></td>';
+						$out .= '</tr>';
+						$out .= '</table></td>';
+						$out .= '<td width="180" align="left" bgcolor="#ECF3F9">'.l('youtube link','podcast/youtube/'.$row->did.'/display').' </td>';
+						$out .= '<td width="180" align="left" bgcolor="#ECF3F9"> </td>';
+						$out .= '</tr>';
+						$out .= '</table>';
+					}
+		}
+		else
+		{
+			$out .= 'You have not access of O-Level Notes';
+		}
+	}
+	else
+	{
+		drupal_goto('user', NULL,NULL);
+	}
+	
+	return $out;
+}

@@ -1,0 +1,154 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+/*
+	Navigation hook_menu
+*/
+function navigation_menu() {
+  $items = array();
+  $items['admin/build/navigation'] = array(
+    'title' => 'Navigation',
+    'description' => t('Configure Bottom Navigation Links'),
+    'page callback' => 'navigation_admin_display',
+    'access arguments' => array('administer navigation'),
+    'file' => 'navi.admin.inc',
+  );
+  $items['admin/build/navigation/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/navigation/add'] = array(
+    'title' => 'Add Navigation Menu',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('navigation_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer navigation'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'navi.admin.inc',
+  );
+  $items['admin/build/navigation/%navigation/configure'] = array(
+    'title' => 'Configure Navigations',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('navigation_admin_configure', 3),
+    'access arguments' => array('administer navigation'),
+    'type' => MENU_CALLBACK,
+    'file' => 'navi.admin.inc',
+  );
+  $items['admin/build/navigation/%navigation/delete'] = array(
+    'title' => 'Delete news',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('navigation_admin_delete', 3),
+    'access arguments' => array('administer navigation'),
+    'type' => MENU_CALLBACK,
+    'file' => 'navi.admin.inc',
+  );
+  $items['admin/build/navigation/%navigation/disable'] = array(
+    'title' => 'Disables Navigation Menu',
+    'page callback' => 'navigation_admin_disable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer navigation'),
+    'type' => MENU_CALLBACK,
+    'file' => 'navi.admin.inc',
+  );
+  $items['admin/build/navigation/%navigation/enable'] = array(
+    'title' => 'Enables Navigation Menu',
+    'page callback' => 'navigation_admin_enable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer navigation'),
+    'type' => MENU_CALLBACK,
+    'file' => 'navi.admin.inc',
+  );
+
+  return $items;
+}
+
+
+/*
+	Navigation hook_load
+*/
+
+function navigation_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('nid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'nid' || $key == 'status' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $my = db_fetch_object(db_query('SELECT * FROM {navigation} WHERE '. implode(' AND ', $query), $params));
+  return $my;
+}
+
+
+
+/*
+	Navigation hook_block
+*/
+function navigation_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Navigation Links on Footer');
+						return $blocks;
+				case 'view':
+						$blocks['content'] =	navigation_html();
+						return $blocks;
+	}
+}
+function navigation_html()
+{		
+		$link['localized_options']['attributes']['target'] = '_blank';
+		
+		
+		$result1 = db_query("SELECT * FROM {navigation} WHERE status ='1' AND direction = 'left'");
+		$out = '';
+		$out .= '<div class="footer-navigation-list">';
+		while ($row1 = db_fetch_object($result1)) 
+		{
+			if($row1->external == 0){
+					$out .= l($row1->title , $row1->path);
+			}
+			else
+			{
+					$out .= l($row1->title , $row1->path , $link['localized_options']);
+			}
+		}
+		$out .= '</div>';
+		
+		
+		$result2 = db_query("SELECT * FROM {navigation} WHERE status ='1' AND direction = 'right'");
+		$out .= '<div class="footer-navigation-list">';
+		while ($row2 = db_fetch_object($result2)) 
+		{
+			if($row2->external == 0){
+						$out .= l($row2->title , $row2->path);
+			}
+			else
+			{
+					$out .= l($row2->title , $row2->path , $link['localized_options']);
+			}
+		}
+		$out .= '</div>';
+		return $out;
+}

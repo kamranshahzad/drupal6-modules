@@ -1,0 +1,98 @@
+<?php
+
+
+
+ 
+ 
+function file_paths_install() 
+{
+  $result = drupal_install_schema('file_paths');
+
+  if ($result[0]['success']) 
+  {
+  		//# 1 (activites)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'activities' );
+		
+		//# 2 (documents)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'documents' );
+		
+		//# 3 (newsletter)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'newletters' );
+		
+		//# 4 (smallgallery)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'smallgallery' );
+		
+		
+		//# 5 (imagedisplay)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'imagedisplay' );
+		
+		//# 6 (staff)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'staff' );
+		
+		//# 7 (links)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'links' );
+		
+		//# 8 (audio)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'audio' );
+		
+		//# 9 (audioplayer)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'audioplayer' );
+		
+		//# 10 (video)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'video' );
+		
+		//# 11 (videoplayer)
+    	$sql = "INSERT INTO {file_paths} ( text_path )";
+    	$sql .= " VALUES ('%s' )";
+    	db_query($sql, 'videoplayer' );
+  }
+}
+
+
+ 
+function file_paths_uninstall() 
+{
+  	drupal_uninstall_schema('file_paths');
+}
+
+
+function file_paths_schema() {
+  $schema['file_paths'] = array(
+    'description' => t('store file paths'),
+    'fields' => array(
+      'fid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+	   'text_path' => array('type' => 'text', 'not null' => FALSE),
+    ),
+	'primary key' => array('fid'),
+  );
+
+  return $schema;
+}
+
+
+
+

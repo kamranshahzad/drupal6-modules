@@ -1,0 +1,101 @@
+<?php
+// $Id: my.module,v 1.5 2009/01/11 13:49:11 kirie Exp $
+
+
+
+function staff_perm() {
+  return array('administer staff', 'use PHP for my visibility');
+}
+
+
+function staff_menu() {
+  $items = array();
+  $items['admin/build/staff'] = array(
+    'title' => 'Staff',
+    'description' => t('Configure staff, including what they are and where they appear on the site.'),
+    'page callback' => 'staff_admin_display',
+    'access arguments' => array('administer staff'),
+    'file' => 'staff.admin.inc',
+  );
+  $items['admin/build/staff/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/staff/add'] = array(
+    'title' => 'Add Staff',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('staff_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer staff'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'staff.admin.inc',
+  );
+  $items['admin/build/staff/%staff/configure'] = array(
+    'title' => 'Configure Staff',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('staff_admin_configure', 3),
+    'access arguments' => array('administer staff'),
+    'type' => MENU_CALLBACK,
+    'file' => 'staff.admin.inc',
+  );
+  $items['admin/build/staff/%staff/clone'] = array(
+    'title' => 'Clone Staff',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('staff_admin_configure', 3, 'clone'),
+    'access arguments' => array('administer staff'),
+    'type' => MENU_CALLBACK,
+    'file' => 'staff.admin.inc',
+  );
+  $items['admin/build/staff/%staff/delete'] = array(
+    'title' => 'Delete Staff',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('staff_admin_delete', 3),
+    'access arguments' => array('administer staff'),
+    'type' => MENU_CALLBACK,
+    'file' => 'staff.admin.inc',
+  );
+
+  $items['content/staff/display'] = array(
+		'page callback' => 'staff_content_display',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+    	'file' => 'content.inc',
+  );
+  
+  $items['content/governors/display'] = array(
+		'page callback' => 'governors_content_display',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+    	'file' => 'content.inc',
+  );
+  
+  return $items;
+}
+
+
+function staff_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('sid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'sid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $staff = db_fetch_object(db_query('SELECT * FROM {staff} WHERE '. implode(' AND ', $query), $params));
+  return $staff;
+}

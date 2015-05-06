@@ -1,0 +1,204 @@
+<?php
+// $Id$
+
+
+
+/*function latestdeals_init()
+{
+    $moPath =  drupal_get_path('module', 'latestdeals');
+	drupal_add_css($moPath .'/css/screen.css');
+	drupal_add_js($moPath.'/js/easySlider1.5.js');	
+}
+*/
+
+function latestdeals_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Latest Deals');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = latestdeals_html();
+						return $blocks;
+	}
+}
+
+
+function latestdeals_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+		
+		$out .= '<div class="topimage02"></div>';
+		$out .= '<div class="midimage02">';
+		$out .= completeString($tPath);
+		$out .= '</div>';
+		$out .= '<div class="centeral02"></div>';
+		$out .= '<div class="midimage02a"></div>';
+		$out .= '<div class="midimage02a"></div>';
+		
+		return $out;
+}
+
+
+function  completeString($path)
+{
+	$out = '';
+	
+	$out .=	'<div id="slider">';
+	$out .=	'<ul class="silderul">	';			
+	$out .=	'<li><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="25" align="left" valign="top">&nbsp;</td>';
+    $out .=	'<td width="174" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'image-glases1.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">Fog</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&pound;49.00</td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="174" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'wm-logo.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">&nbsp;</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&nbsp;</td>';
+    $out .=	' </tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="174" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	' <tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'wm-logo2.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">Classic</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&pound;89.00</td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="158" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'image-glases4.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">Mambo</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&pound;75.00</td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="25" align="left" valign="top">&nbsp;</td>';
+    $out .=	'</tr>';
+  	$out .=	'</table>';
+	$out .=	'</li>';
+	$out .=	'<li><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="25" align="left" valign="top">&nbsp;</td>';
+    $out .=	'<td width="174" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'image-glases1.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">Fog</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&pound;49.00</td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="174" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'wm-logo.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	' <tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">&nbsp;</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&nbsp;</td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="174" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'wm-logo2.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">Classic</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&pound;89.00</td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="158" align="left" valign="top"><table width="26%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td align="left" valign="top"><img src="'.$path.'image-glases4.jpg" width="157" height="127" alt="" /></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td height="39" align="left" valign="middle" background="'.$path.'bg-purple.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .=	'<tr>';
+    $out .=	'<td width="10">&nbsp;</td>';
+    $out .=	'<td width="67" class="text-tahoma-14-bold">Mambo</td>';
+    $out .=	'<td width="80" class="text-tahoma-22">&pound;75.00</td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'</tr>';
+    $out .=	'<tr>';
+    $out .=	'<td align="center" valign="top"><img src="'.$path.'include-lenses.jpg" width="155" height="20" /></td>';
+    $out .=	'</tr>';
+    $out .=	'</table></td>';
+    $out .=	'<td width="25" align="left" valign="top">&nbsp;</td>';
+    $out .=	'</tr>';
+  	$out .=	'</table>';
+	$out .=	'</li>';				
+	$out .=	'</ul>';
+	$out .=	'</div>';
+}

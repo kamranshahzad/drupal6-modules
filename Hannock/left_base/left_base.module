@@ -1,0 +1,47 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+function left_base_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Left Base on Main Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = left_base_html();
+						return $blocks;
+	}
+}
+
+function left_base_html()
+{
+		
+		$path = 'sites/default/files/'.get_imagedisplay_path2().'/';
+		$image = $path . get_school_name();
+		
+		
+		$out = '';
+		$out .= '<a href="?q=node/5"><img src="'.$image.'" width="120" height="85" border="0" alt="hannock School image"/></a>';
+		$out .= 'We thank you for your interest in our friendly, village school and extend a warm welcome to children, parents, carers and families of children who wish to find out more about us. This website is intended to give information about the life, organisation, aims of our school and achievements of our pupils.';
+		return $out;
+}
+
+function get_imagedisplay_path2()
+{
+	$result = db_query("SELECT * FROM file_paths WHERE fid='5'");
+	$row = db_fetch_object($result);
+	return $row->text_path;
+}
+
+function get_school_name()
+{
+	$result = db_query("SELECT * FROM {imagedisplay} WHERE pid='3'");
+	$row = db_fetch_object($result);
+	return $row->imagename;
+}

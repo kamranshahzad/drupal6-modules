@@ -1,0 +1,5 @@
+; $Id$
+name = file_paths
+description = Change All File Paths From Here.
+package = Hannock
+core = 6.x

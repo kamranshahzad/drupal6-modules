@@ -1,0 +1,5 @@
+; $Id$
+name = "categories"
+description = Top Categories on Pages.
+package = Advanced
+core = 6.x

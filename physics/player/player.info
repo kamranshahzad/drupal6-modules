@@ -1,0 +1,6 @@
+; $Id$
+
+name = "player"
+description = Shows Player Page.
+package = physics
+core = 6.x

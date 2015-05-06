@@ -1,0 +1,24 @@
+.Main 
+{/* style grouping for content divs */
+  margin: 2.5em 3%;
+  font: 1em Georgia, Palatino, Serif; 
+  padding: 1.5em;
+  border: 8px groove  #c0c0c0;
+  background: #f5f5f5;
+}
+
+  h1.float-left {/* header element float */
+  float: left;
+  width: 9em;
+  margin: 0 0.2em 0 0;
+  background: #eee8aa;
+  border-right: 2px dotted #cd853f;
+  border-bottom: 2px dotted #cd853f;
+  }
+
+  p.top {/* after header margin adjustment */
+  margin-top: 0;
+  padding: 0.2em;
+  border-top: 3px dotted #696969;
+  background: #ffffe0;
+  }

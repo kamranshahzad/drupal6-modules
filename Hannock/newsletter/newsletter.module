@@ -1,0 +1,91 @@
+<?php
+// $Id$
+
+
+function newsletter_init()
+{
+    $moPath =  drupal_get_path('module', 'documents');
+	drupal_add_css($moPath.'/shadowbox/shadowbox.css');
+	drupal_add_js($moPath.'/shadowbox/shadowbox.js');
+}
+
+
+function newsletter_menu() {
+  $items = array();
+  $items['admin/build/newsletter'] = array(
+    'title' => 'Newsletter',
+    'description' => t('Configure newsletter'),
+    'page callback' => 'newsletter_admin_display',
+    'access arguments' => array('administer newsletter'),
+    'file' => 'newsletter.admin.inc',
+  );
+  $items['admin/build/newsletter/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/newsletter/add'] = array(
+    'title' => 'Upload Newsletter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('newsletter_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer newsletter'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'newsletter.admin.inc',
+  );
+  $items['admin/build/newsletter/%newsletter/configure'] = array(
+    'title' => 'Configure Newsletter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('newsletter_admin_configure', 3),
+    'access arguments' => array('administer newsletter'),
+    'type' => MENU_CALLBACK,
+    'file' => 'newsletter.admin.inc',
+  );
+  $items['admin/build/newsletter/%newsletter/delete'] = array(
+    'title' => 'Delete newsletter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('newsletter_admin_delete', 3),
+    'access arguments' => array('administer newsletter'),
+    'type' => MENU_CALLBACK,
+    'file' => 'newsletter.admin.inc',
+  );
+  $items['content/newsletter/display'] = array(              
+					'page callback' => 'newsletter_list_display',
+					'access arguments' => array('access content'),
+					'type' => MENU_CALLBACK,
+					'file' => 'newsletter.content.inc',
+	);
+  return $items;
+}
+
+
+/*
+	Navigation hook_load
+*/
+
+function newsletter_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('nid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'nid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $news = db_fetch_object(db_query('SELECT * FROM {newsletter} WHERE '. implode(' AND ', $query), $params));
+  return $news;
+}
+

@@ -1,0 +1,50 @@
+<?php
+// $Id$
+
+function player_menu() 
+{
+	$items = array();
+	$items['podcast/vedio/%/display'] = array(
+			'title' => 'Podcast Page',
+			'page callback' => 'player_vedio_display',
+			'page arguments' => array(2),
+			'access arguments' => array('access content'),
+			'type' => MENU_CALLBACK,
+			'file' => 'player.content.inc',
+	);
+	
+  	return $items;
+}
+
+
+
+function player_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Player on Podcast');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = player_html();
+						return $blocks;
+	}
+}
+
+function player_html()
+{
+		$result = db_query("SELECT * FROM {vedioplay}");
+		
+		$path = drupal_get_path('theme', 'hannock').'/';
+		$out = '';
+		$out .= '<div class="head">Videos</div>';
+		$out .= '<div class="list">';
+  		$out .= '<ul>';
+		while($row = db_fetch_object($result))
+		{
+    		$out .= '<li>'.l($row->title, 'podcast/vedio/'.$row->vid.'/display').'</li>';
+		}
+  		$out .= '</ul>';
+ 		$out .= '</div>';
+		return $out;
+}
+

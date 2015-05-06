@@ -1,0 +1,5 @@
+; $Id$
+name = "newsletter"
+description = Shows Newsletters on Website.
+package = Hannock
+core = 6.x

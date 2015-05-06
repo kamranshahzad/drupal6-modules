@@ -1,0 +1,5 @@
+; $Id$
+name = "newsticker"
+description = News Ticker Scroller.
+package = Advanced
+core = 6.x

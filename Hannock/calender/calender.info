@@ -1,0 +1,6 @@
+; $Id$
+name = "calender"
+description = Shows School Calender.
+package = Hannock
+core = 6.x
+

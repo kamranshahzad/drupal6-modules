@@ -1,0 +1,5 @@
+; $Id$
+name = "left_base"
+description = Shows left_base on Main Page.
+package = Hannock
+core = 6.x

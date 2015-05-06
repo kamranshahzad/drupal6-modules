@@ -1,0 +1,107 @@
+<?php
+// $Id$
+
+function smallgallery_menu() 
+{
+  	$items = array();
+	$items['admin/build/smallgallery'] = array(
+		'title' => 'Manage Small Gallery Images',
+		'description' => t('Configure Small Images on Main Page'),
+		'page callback' => 'smallgallery_admin_display',
+		'access arguments' => array('administer smallgallery'),
+		'file' => 'smallgallery.admin.inc',
+	  );
+	  $items['admin/build/smallgallery/list'] = array(
+		'title' => 'List',
+		'type' => MENU_DEFAULT_LOCAL_TASK,
+		'weight' => -10,
+	  );
+	 $items['admin/build/smallgallery/%smallgallery/configure'] = array(
+    	'title' => 'Configure Images',
+    	'page callback' => 'drupal_get_form',
+    	'page arguments' => array('smallgallery_admin_configure', 3),
+    	'access arguments' => array('administer smallgallery'),
+    	'type' => MENU_CALLBACK,
+    	'file' => 'smallgallery.admin.inc',
+  	 );
+	 return $items;
+}
+
+
+function smallgallery_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('id' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'id') {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $small = db_fetch_object(db_query('SELECT * FROM {smallgallery} WHERE '. implode(' AND ', $query), $params));
+  return $small;
+}
+
+
+
+function smallgallery_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Small Gallery Block on Footer Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = smallgallery_html();
+						return $blocks;
+	}
+}
+
+function smallgallery_html()
+{
+
+		$flpath = 'sites/default/files/';
+		$all_img = array();
+		$count = 1;
+		
+		
+		$result = db_query('SELECT * FROM smallgallery');
+		
+		while($row = db_fetch_object($result))
+		{
+			$all_img[$count] = $row->filepath;
+			$count++;
+		}
+		
+		$path = drupal_get_path('theme', 'hannock').'/images/';
+		$btimage = $path . 'view-moregallery.gif';
+		$galleryImage = $path . 'image-gallery/thumbnails/01.jpg';
+		
+		$out = '';
+		$out .= '<div class="bottomlinks-innercontainer-02-thumbnails">';
+		$out .= '<img src="'.$flpath.$all_img[1].'" alt="image 1" />';
+		$out .= '<img src="'.$flpath.$all_img[2].'" alt="image 2" />';
+		$out .= '<img src="'.$flpath.$all_img[3].'" alt="image 3" />';
+		$out .= '<img src="'.$flpath.$all_img[4].'" alt="image 4" />';
+		$out .= '<img src="'.$flpath.$all_img[5].'" alt="image 5" />';
+		$out .= '<img src="'.$flpath.$all_img[6].'" alt="image 6" />';
+		$out .= '<img src="'.$flpath.$all_img[7].'" alt="image 7" />';
+		$out .= '<img src="'.$flpath.$all_img[8].'" alt="image 8" />';
+		$out .= '<img src="'.$flpath.$all_img[9].'"  alt="image 9"/></div>';
+		$out .= '<div style="text-align:center;"><a href="?q=gallery"><img src="'.$btimage.'" alt="View Image Gallery" border="0" /></a></div>';
+		return $out;
+}
+
+

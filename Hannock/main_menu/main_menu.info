@@ -1,0 +1,5 @@
+; $Id$
+name = "main_menu"
+description = Shows Main Menus.
+package = Hannock
+core = 6.x

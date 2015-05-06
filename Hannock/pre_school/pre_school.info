@@ -1,0 +1,5 @@
+; $Id$
+name = "pre_school"
+description = Shows Pre-School Page.
+package = Hennock
+core = 6.x

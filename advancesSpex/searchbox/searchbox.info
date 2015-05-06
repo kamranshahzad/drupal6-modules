@@ -1,0 +1,5 @@
+; $Id$
+name = "searchbox"
+description = Search Box.
+package = Advanced
+core = 6.x

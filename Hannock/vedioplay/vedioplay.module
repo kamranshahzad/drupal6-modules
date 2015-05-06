@@ -1,0 +1,82 @@
+<?php
+// $Id$
+
+
+function vedioplay_menu() {
+  $items = array();
+  $items['admin/build/vedioplay'] = array(
+    'title' => 'videoplay',
+    'description' => t('Configure vedioplay'),
+    'page callback' => 'vedioplay_admin_display',
+    'access arguments' => array('administer vedioplay'),
+    'file' => 'vedioplay.admin.inc',
+  );
+  $items['admin/build/vedioplay/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/vedioplay/add'] = array(
+    'title' => 'Add Video File',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vedioplay_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer vediocategory'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'vedioplay.admin.inc',
+  );
+  $items['admin/build/vedioplay/%vedioplay/configure'] = array(
+    'title' => 'Configure Video File',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vedioplay_admin_configure', 3),
+    'access arguments' => array('administer vedioplay'),
+    'type' => MENU_CALLBACK,
+    'file' => 'vedioplay.admin.inc',
+  );
+  $items['admin/build/vedioplay/%vedioplay/delete'] = array(
+    'title' => 'Delete Video Category',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vedioplay_admin_delete', 3),
+    'access arguments' => array('administer vedioplay'),
+    'type' => MENU_CALLBACK,
+    'file' => 'vedioplay.admin.inc',
+  );
+  $items['content/vedioplay/display'] = array(              
+					'title' => '',
+					'page callback' => 'vedioplay_list_display',
+					'access arguments' => array('access content'),
+					'type' => MENU_CALLBACK,
+					'file' => 'vedioplay.content.inc',
+  );
+  return $items;
+}
+
+
+
+
+function vedioplay_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('vid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'vid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $play = db_fetch_object(db_query('SELECT * FROM {vedioplay} WHERE '. implode(' AND ', $query), $params));
+  return $play;
+}
+

@@ -1,0 +1,5 @@
+; $Id$
+name = "right_base"
+description = Shows right_base on Main Page.
+package = Hannock
+core = 6.x

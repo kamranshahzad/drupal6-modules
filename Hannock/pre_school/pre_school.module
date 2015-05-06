@@ -1,0 +1,27 @@
+<?php
+// $Id$
+
+
+
+function pre_school_menu()
+{
+	$items = array();
+	
+	 $items['content/pre_school/display'] = array(
+		'title' => '',
+		'page callback' => 'content_pre_school_display',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+  	);
+	
+	return $items;
+}
+
+
+function content_pre_school_display()
+{
+	$out = '';
+	$out .= 'Hello';
+	
+	return $out;
+}

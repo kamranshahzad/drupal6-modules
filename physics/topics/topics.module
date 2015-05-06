@@ -1,0 +1,152 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+function topics_menu() 
+{
+  $items = array();
+  $items['admin/build/topics'] = array(
+    'title' => 'Topics',
+    'description' => t('Configure Topics, including what they are and where they appear on the site.'),
+    'page callback' => 'topics_display',
+    'access arguments' => array('administer topics'),
+    'file' => 'admin.topics.inc',
+  );
+  
+  $items['admin/build/topics/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  
+  $items['admin/build/topics/add'] = array(
+    'title' => 'Add New Topic',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('topics_configure', NULL, 'add'),
+    'access arguments' => array('administer topics'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'admin.topics.inc',
+  );
+  
+  $items['admin/build/topics/%topics/configure'] = array(
+    'title' => 'Configure Topics',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('topics_configure', 3),
+    'access arguments' => array('administer topics'),
+    'type' => MENU_CALLBACK,
+    'file' => 'admin.topics.inc',
+  );
+
+  $items['admin/build/topics/%topics/delete'] = array(
+    'title' => 'Delete Topic',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('topics_delete', 3),
+    'access arguments' => array('administer topics'),
+    'type' => MENU_CALLBACK,
+    'file' => 'admin.topics.inc',
+  );
+  
+   $items['content/topics/display'] = array(                  
+		'title' => 'Event Dairy',
+		'page callback' => 'conent_topics',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+		'file' => 'topics.content.inc',
+	);	  
+  	return $items;
+}
+
+
+
+function topics_load($array = array()) 
+{
+  // Dynamically compose a SQL query (similar to user.module -> user_load):
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('tid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'tid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  $top = db_fetch_object(db_query('SELECT * FROM {topics} WHERE '. implode(' AND ', $query), $params));
+  return $top;
+}
+
+
+/*
+	Start Block Area 
+*/
+
+/*function topics_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) 
+	{
+		case 'list':
+				$blocks[0]['info'] = t('Show Right Base on Main Page');
+				return $blocks;
+		case 'view':
+				$blocks['content'] = right_base_html();
+				return $blocks;
+	}
+}
+
+function right_base_html()
+{
+		$path = drupal_get_path('module', 'right_base');
+		$jsPath = $path.'/js/';
+		$cssPath = $path.'/css/';
+		drupal_add_js($jsPath.'CyclePlugin.js');
+		drupal_add_css($cssPath .'event_dairy.css');
+	
+	
+		$path = 'sites/default/files/'.get_imagedisplay_path().'/';
+		$imagePath = $path . get_event_name();
+		
+		
+		$out = '';
+		$result = db_query("SELECT * FROM {right_base}");
+		
+		$out .= '<img src="'.$imagePath.'" width="120" height="85" alt="News Events"/>';
+		$out .= '<div id="s2" class="pics">';
+		while($row = db_fetch_object($result))
+		{
+			
+			$out .= '<span><strong>'.$row->event_date.'</strong><br /><br />';
+  			$out .= $row->event_text .'</span>';
+		}
+		$out .= '</div>';
+		
+		return $out;
+}
+
+function get_imagedisplay_path()
+{
+	$result = db_query("SELECT * FROM file_paths WHERE fid='5'");
+	$row = db_fetch_object($result);
+	return $row->text_path;
+}
+
+function get_event_name()
+{
+	$result = db_query("SELECT * FROM {imagedisplay} WHERE pid='2'");
+	$row = db_fetch_object($result);
+	return $row->imagename;
+}*/

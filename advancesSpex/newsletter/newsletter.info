@@ -1,0 +1,5 @@
+; $Id$
+name = "newsletter"
+description = NewsLetters.
+package = Advanced
+core = 6.x

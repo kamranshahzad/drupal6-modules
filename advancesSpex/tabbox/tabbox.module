@@ -1,0 +1,65 @@
+<?php
+// $Id$
+
+function tabbox_init()
+{
+    $moPath =  drupal_get_path('module', 'tabbox');
+	drupal_add_css($moPath .'/css/style-hotdeals.css');
+	//drupal_add_js($moPath.'/js/jquery.min.js');
+	drupal_add_js($moPath.'/js/jquery-ui.min.js');
+	
+/*	drupal_add_js('$(document).ready(
+  			function(){
+					$("#featured > ul").tabs({fx:{opacity: "toggle"}}).tabs("rotate", 5000, true);
+  			});',
+  			'inline'
+  	);*/
+}
+
+
+function tabbox_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Tab Boxes on Header');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = tabbox_html();
+						return $blocks;
+	}
+}
+
+function tabbox_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+	
+
+	  
+		
+		
+		//drupal_add_js($path.'/jquery.innerfade.js');
+  		//drupal_add_css($path .'/linkbox.css');
+		$out = '';
+		
+		$out .= '<div id="featured" >';
+		  
+        $out .= '<ul class="ui-tabs-nav">';
+	    $out .= '<li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-1"><a href="#fragment-1"><img src="'.$tPath.'btn-hotdeals.jpg" alt="" width="147" height="58" border="0" /></a></li>';
+	    $out .= '<li class="ui-tabs-nav-item" id="nav-fragment-2"><a href="#fragment-2"><img src="'.$tPath.'btn-latest.jpg" alt="" width="147" height="58" border="0" /></a></li>';
+	    $out .= '<li class="ui-tabs-nav-item" id="nav-fragment-3"><a href="#fragment-3"><img src="'.$tPath.'btn-designer-deals.jpg" alt="" width="147" height="58" border="0" /></a></li>';
+        $out .= '</ul>';
+	    $out .= '<div id="fragment-1" class="ui-tabs-panel" >';
+		$out .= '<img src="'.$tPath.'double-the-deal.jpg" alt="" width="577" height="215" /></div>';
+	    $out .= '<div id="fragment-2" class="ui-tabs-panel ui-tabs-hide" >';
+		$out .= '<img src="'.$tPath.'double-the-deal.jpg" alt="" /> ';
+	    $out .= '</div>';
+	    $out .= '<div id="fragment-3" class="ui-tabs-panel ui-tabs-hide">';
+		$out .= '<img src="'.$tPath.'double-the-deal.jpg" alt="" />';
+	    $out .= '</div>';
+		
+		$out .= '</div>';
+
+		
+		return $out;
+}

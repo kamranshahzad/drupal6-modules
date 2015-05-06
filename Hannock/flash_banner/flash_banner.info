@@ -1,0 +1,5 @@
+; $Id$
+name = "flash_banner"
+description = Display Flash Banner on Hannock Website.
+package = Hannock
+core = 6.x

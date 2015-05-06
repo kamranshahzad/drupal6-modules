@@ -1,0 +1,69 @@
+<?php
+// $Id: corner.install,v 1.4 2009/01/06 21:45:19 kirie Exp $
+
+
+
+function activites_install() {
+  $result = drupal_install_schema('activites');
+
+
+  if ($result[0]['success']) {
+  		$sql = "INSERT INTO {activites} (title)";
+    	$sql .= " VALUES ('%s')";
+    		db_query($sql, 'Activity # 1' );
+		drupal_set_message("Activites Table Created Successfully");		
+  }
+}
+
+
+function activites_uninstall() {
+  drupal_uninstall_schema('activites');
+}
+
+
+function activites_schema() {
+  $schema['activites'] = array(
+    'description' => t('Stores Documents Information'),
+    'fields' => array(
+      'aid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Title of Navigations'),
+      ),
+	  'image1' => array('type' => 'text', 'not null' => FALSE),
+	  'text1' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'image2' => array('type' => 'text', 'not null' => FALSE),
+	  'text2' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'image3' => array('type' => 'text', 'not null' => FALSE),
+	  'text3' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'image4' => array('type' => 'text', 'not null' => FALSE),
+	  'text4' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'image5' => array('type' => 'text', 'not null' => FALSE),
+	  'text5' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'image6' => array('type' => 'text', 'not null' => FALSE),
+	  'text6' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'image7' => array('type' => 'text', 'not null' => FALSE),
+	  'text7' => array('type' => 'text', 'not null' => FALSE),
+    ),
+	'primary key' => array('aid'),
+  );
+
+  return $schema;
+}
+
+
+
+

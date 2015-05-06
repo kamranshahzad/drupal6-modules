@@ -1,0 +1,89 @@
+<?php
+// $Id: corner.install,v 1.4 2009/01/06 21:45:19 kirie Exp $
+
+
+
+function smallgallery_install() {
+  $result = drupal_install_schema('smallgallery');
+
+
+  if ($result[0]['success']) {
+    
+	//#1
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path1');
+	
+	//#2
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path2');
+	
+	//#3
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path3');
+	
+	//#4
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path4');
+	
+	//#5
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path5');
+	
+	//#6
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path6');
+	
+	//#7
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path7');
+	
+	//#8
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path8');
+	
+	//#9
+	$sql = "INSERT INTO {smallgallery} (filepath)";
+    $sql .= " VALUES ('%s')";
+    db_query($sql, 'path9');
+	
+	
+	drupal_set_message("smallgallery Table Created Successfully");
+  }
+}
+
+
+
+
+function smallgallery_uninstall() {
+  drupal_uninstall_schema('smallgallery');
+}
+
+
+function smallgallery_schema() 
+{
+  $schema['smallgallery'] = array(
+    'description' => t('Stores smallgallery'),
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+	  'filepath' => array('type' => 'text', 'not null' => FALSE),
+	),
+	'primary key' => array('id'),
+  );
+  return $schema;
+}
+
+
+
+

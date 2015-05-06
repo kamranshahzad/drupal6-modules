@@ -1,0 +1,76 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+function calender_help($path, $arg)
+{
+  switch ($path) 
+  {
+    case 'admin/modules#description':
+      return t('Shows configurable my mys on your site.');
+    case 'calender':
+      $params = array('!add_new' => l(t('add my page'), 'admin/add'), '%configure' => t('configure'));
+      return t('mys are images which are shown at the top of pages - in the left or right \'my\'.  Create new mys on the !add_new or configure existing mys by clicking the %configure link next to each one.', $params);
+  }
+
+}
+
+
+function calender_menu()
+{
+	$items = array();
+	$items['admin/build/%calender/configure'] = array(
+		'title' => 'Configure Calender',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('calender_configure', 2 , 'config'),
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+		'file' => 'calender.admin.inc',
+  	);
+	$items['content/calender/display'] = array(
+		'title' => 'Calender Display Page',
+		'page callback' => 'calender_html',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+    	'file' => 'calender.content.inc',
+  	);
+	return $items;
+}
+
+
+/*
+	
+*/
+function calender_load($array = array()) 
+{
+  // Dynamically compose a SQL query (similar to user.module -> user_load):
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('cid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'cid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $my = db_fetch_object(db_query('SELECT * FROM {calender} WHERE '. implode(' AND ', $query), $params));
+  return $my;
+}
+
+

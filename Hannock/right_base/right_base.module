@@ -1,0 +1,170 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+function right_base_menu() 
+{
+  
+  $items = array();
+  $items['admin/build/right_base'] = array(
+    'title' => 'Event Dairy',
+    'description' => t('Configure Event Dairy, including what they are and where they appear on the site.'),
+    'page callback' => 'right_base_display',
+    'access arguments' => array('administer right_base'),
+    'file' => 'admin.right_base.inc',
+  );
+  
+  $items['admin/build/right_base/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  
+  $items['admin/build/right_base/add'] = array(
+    'title' => 'Add Event in Dairy',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('right_base_configure', NULL, 'add'),
+    'access arguments' => array('administer right_base'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'admin.right_base.inc',
+  );
+  
+  $items['admin/build/right_base/%right_base/configure'] = array(
+    'title' => 'Configure Event Dairy',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('right_base_configure', 3),
+    'access arguments' => array('administer right_base'),
+    'type' => MENU_CALLBACK,
+    'file' => 'admin.right_base.inc',
+  );
+
+  $items['admin/build/right_base/%right_base/delete'] = array(
+    'title' => 'Delete Event From Dairy',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('right_base_delete', 3),
+    'access arguments' => array('administer right_base'),
+    'type' => MENU_CALLBACK,
+    'file' => 'admin.right_base.inc',
+  );
+  $items['admin/build/right_base/%right_base/disable'] = array(
+    'title' => 'Disables Event',
+    'page callback' => 'right_base_disable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer products'),
+    'type' => MENU_CALLBACK,
+    'file' => 'admin.right_base.inc',
+  );
+  $items['admin/build/right_base/%right_base/enable'] = array(
+    'title' => 'Enables Events',
+    'page callback' => 'right_base_enable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer right_base'),
+    'type' => MENU_CALLBACK,
+    'file' => 'admin.right_base.inc',
+  );
+  
+   $items['content/event_dairy/display'] = array(                  
+					'title' => 'Event Dairy',
+					'page callback' => 'conent_eventdairy_display',
+					'access arguments' => array('access content'),
+					'type' => MENU_CALLBACK,
+					'file' => 'right_base.content.inc',
+	);
+		  
+  	return $items;
+}
+
+
+
+function right_base_load($array = array()) 
+{
+  // Dynamically compose a SQL query (similar to user.module -> user_load):
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('eid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'eid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  $event = db_fetch_object(db_query('SELECT * FROM {right_base} WHERE '. implode(' AND ', $query), $params));
+  return $event;
+}
+
+
+/*
+	Start Block Area 
+*/
+
+function right_base_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) 
+	{
+		case 'list':
+				$blocks[0]['info'] = t('Show Right Base on Main Page');
+				return $blocks;
+		case 'view':
+				$blocks['content'] = right_base_html();
+				return $blocks;
+	}
+}
+
+function right_base_html()
+{
+		$path = drupal_get_path('module', 'right_base');
+		$jsPath = $path.'/js/';
+		$cssPath = $path.'/css/';
+		drupal_add_js($jsPath.'CyclePlugin.js');
+		drupal_add_css($cssPath .'event_dairy.css');
+	
+	
+		$path = 'sites/default/files/'.get_imagedisplay_path().'/';
+		$imagePath = $path . get_event_name();
+		
+		
+		$out = '';
+		$result = db_query("SELECT * FROM {right_base}");
+		
+		$out .= '<img src="'.$imagePath.'" width="120" height="85" alt="News Events"/>';
+		$out .= '<div id="s2" class="pics">';
+		while($row = db_fetch_object($result))
+		{
+			
+			$out .= '<span><strong>'.$row->event_date.'</strong><br /><br />';
+  			$out .= $row->event_text .'</span>';
+		}
+		$out .= '</div>';
+		
+		return $out;
+}
+
+function get_imagedisplay_path()
+{
+	$result = db_query("SELECT * FROM file_paths WHERE fid='5'");
+	$row = db_fetch_object($result);
+	return $row->text_path;
+}
+
+function get_event_name()
+{
+	$result = db_query("SELECT * FROM {imagedisplay} WHERE pid='2'");
+	$row = db_fetch_object($result);
+	return $row->imagename;
+}

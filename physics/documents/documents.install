@@ -1,0 +1,66 @@
+<?php
+// $Id: corner.install,v 1.4 2009/01/06 21:45:19 kirie Exp $
+
+
+
+function documents_install() {
+  $result = drupal_install_schema('documents');
+
+
+  if ($result[0]['success']) {
+		drupal_set_message("Document Table Created Successfully");		
+  }
+}
+
+
+function documents_uninstall() {
+  drupal_uninstall_schema('documents');
+}
+
+
+function documents_schema() {
+  $schema['documents'] = array(
+    'description' => t('Stores Documents Information'),
+    'fields' => array(
+      'did' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+	  'tid' => array(
+		'type' => 'int',
+		'not null' => TRUE,
+		'description' => t('Forign Key '),
+      ),
+	  'dates' => array(
+		'type' => 'datetime',
+		'not null' => TRUE,
+		'description' => t('Document Submited Dates '),
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Title of Navigations'),
+      ),
+	  'ulink' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('U Links'),
+      ),
+	  'des' => array('type' => 'text', 'not null' => FALSE),
+	  'file1' => array('type' => 'text', 'not null' => FALSE),
+	  'file2' => array('type' => 'text', 'not null' => FALSE),
+	  'file3' => array('type' => 'text', 'not null' => FALSE),
+    ),
+	'primary key' => array('did'),
+  );
+  return $schema;
+}
+
+
+
+

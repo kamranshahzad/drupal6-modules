@@ -1,0 +1,5 @@
+; $Id$
+name = imagedisplay
+description = Change Images on Some Pages.
+package = Hannock
+core = 6.x

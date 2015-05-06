@@ -1,0 +1,5 @@
+; $Id$
+name = "vedioplay"
+description = Shows vedioplay Website.
+package = Hannock
+core = 6.x

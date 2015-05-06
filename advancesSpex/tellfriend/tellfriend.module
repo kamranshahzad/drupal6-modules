@@ -1,0 +1,96 @@
+<?php
+// $Id$
+
+
+
+function tellfriend_menu()
+{
+	$items = array(); 
+  	$items['content/tellfriend'] = array(
+		'description' => t('This will Display Tell a Friend Form'),
+		'page callback' => 'tellfriend_content',
+		'access arguments' => array('access content'),
+  	);
+	return $items;
+}
+
+
+
+function tellfriend_content()
+{
+	global $base_url;
+	$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+
+	$out = '';
+	$out .= '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td width="631" align="left" valign="middle" class="txt-georgia"><span class="tahoma-17Copy"><strong>Tell</strong></span><strong> <span class="tahoma-17">a Friend!</span></strong></td>';
+    $out .= '<td width="40" align="center" valign="middle"><img src="'.$tPath.'arrow-gra-white.jpg" width="23" height="24"></td>';
+    $out .= '</tr>';
+    $out .= '</table></td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top" background="'.$tPath.'separator-dash.jpg">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top">';
+    $out .= '<!-- Inner Table -->';
+    $out .= '<table width="100%">';
+    $out .= '<tr>';
+    $out .= '<td width="49%" valign="top">';
+	$out .= drupal_get_form('tellfriend_form');
+	$out .= '</td>';
+    $out .= '<td width="51%"><img src="'.$tPath.'friends.jpg" width="250" height="266"></td>';
+    $out .= '</tr>';
+    $out .= '</table>';
+    $out .= '<!-- Ends Inner Table -->';
+    $out .= '</td>';
+    $out .= '</tr>';
+    $out .= '</table>';                                    
+    $out .= '<p align="justify"><img src="'.$tPath.'tell-freind.jpg" width="435" height="54" border="0" usemap="#Map"></p></td>';
+    $out .= '</tr>';
+    $out .= '</table>';
+	
+	return $out;
+}
+
+
+function tellfriend_form()
+{
+	$form = array();
+	$form['email1'] = array(
+			  '#type' => 'textfield',
+			  '#title' => t('Recipients email'),
+			  '#size' => 60,
+			  '#maxlength' => 60,
+			  '#required' => TRUE,
+			  '#attributes' => array('class' => 'tellfriend_email1'),
+	);
+	$form['email2'] = array(
+			  '#type' => 'textfield',
+			  '#title' => t('Your email'),
+			  '#size' => 60,
+			  '#maxlength' => 60,
+			  '#required' => TRUE,
+			  '#attributes' => array('class' => 'tellfriend_email2'),
+	);
+	$form['des'] = array(
+			'#type' => 'textarea',
+			'#title' => t('Enter you message'),
+			'#maxlength' => 255,
+			'#attributes' => array('class' => 'tellfriend_des'),
+	);
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('') , 
+		'#attributes' => array('class' => 'tellfriend_button'),
+		);
+	return $form;
+}

@@ -1,0 +1,71 @@
+<?php
+
+
+
+ 
+ 
+function kids_images_install() 
+{
+  $result = drupal_install_schema('kids_images');
+
+  if ($result[0]['success']) 
+  {
+  		//# 1 (Classess)
+    	$sql = "INSERT INTO {kids_images} ( linktitle1  ,linkpath1 , linktitle2 , linkpath2 , filename1 ,filename2 )";
+    	$sql .= " VALUES ('%s' , '%s'  , '%s'  , '%s'  , '%s'  , '%s'  )";
+    	db_query($sql, 'test1' , 'test2' , 'test3' , 'test4' ,'test5' , 'test6' );
+		
+		//# 2 (Foundation)
+    	$sql = "INSERT INTO {kids_images} ( linktitle1  ,linkpath1 , linktitle2 , linkpath2 , filename1 ,filename2 )";
+    	$sql .= " VALUES ('%s' , '%s'  , '%s'  , '%s'  , '%s'  , '%s'  )";
+    	db_query($sql, 'test1' , 'test2' , 'test3' , 'test4' ,'test5' , 'test6' );
+		
+		//# 3 (Class-1)
+    	$sql = "INSERT INTO {kids_images} ( linktitle1  ,linkpath1 , linktitle2 , linkpath2 , filename1 ,filename2 )";
+    	$sql .= " VALUES ('%s' , '%s' ,'%s' , '%s'  , '%s' , '%s' )";
+    	db_query($sql, 'test1' , 'test2' , 'test3' , 'test4' ,'test5' , 'test6'  );
+		
+		//# 4 (Class-2)
+    	$sql = "INSERT INTO {kids_images} ( linktitle1  ,linkpath1 , linktitle2 , linkpath2 , filename1 ,filename2 )";
+    	$sql .= " VALUES ('%s' , '%s' ,'%s' , '%s'  , '%s' , '%s')";
+    	db_query($sql, 'test1' , 'test2' , 'test3' , 'test4' ,'test5' , 'test6' );
+		
+		
+  }
+}
+
+
+ 
+function kids_images_uninstall() 
+{
+  	drupal_uninstall_schema('kids_images');
+}
+
+
+function kids_images_schema() {
+  $schema['kids_images'] = array(
+    'description' => t('store images '),
+    'fields' => array(
+      'kid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+	  'linktitle1' => array('type' => 'text', 'not null' => FALSE),
+	  'linkpath1' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'linktitle2' => array('type' => 'text', 'not null' => FALSE),
+	  'linkpath2' => array('type' => 'text', 'not null' => FALSE),
+	  
+	  'filename1' => array('type' => 'text', 'not null' => FALSE),
+	  'filename2' => array('type' => 'text', 'not null' => FALSE),
+    ),
+	'primary key' => array('kid'),
+  );
+
+  return $schema;
+}
+
+
+
+

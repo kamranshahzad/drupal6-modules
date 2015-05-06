@@ -1,0 +1,145 @@
+<?php
+// $Id$
+
+function newsletter_menu() 
+{
+  	$items = array();
+    $items['content/newsletter'] = array(
+   		    'title' => '',
+			'page callback' => 'newsletter_display',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+  	);
+   	return $items;
+}
+
+
+function newsletter_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('NewsLetter');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = newsletter_html();
+						return $blocks;
+	}
+}
+
+function newsletter_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+
+		$out = '';
+
+		
+		$out .= '<div class="newsletterCon">';
+		$out .= drupal_get_form('newsletter_form');
+		$out .= '<div class="clear"></div>';
+	  	$out .= '</div>';
+		
+		return $out;
+}
+
+
+function newsletter_form() 
+{
+  	$form = array();
+	$form['name'] = array(
+		'#type' => 'textfield',
+		'#default_value' => t('Enter Email Address'),
+		'#required' => TRUE,
+		'#attributes' => array('class' => 'txtfield'),
+		'#prefix' => '<div>',
+  		'#suffix' => '</div>',
+	);
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('') , 
+		'#attributes' => array('class' => 'newsletterButton'),
+		'#prefix' => '<div class="btn">',
+  		'#suffix' => '</div>',
+		);
+	return $form;
+} 
+
+
+function newsletter_form_submit($form, &$form_state)
+{
+	$name = $form_state['values']['state'];
+	$params = array(
+		'name'=>'kamran'
+    );
+	drupal_mail('newsletter', NULL , 'bleak_unseen@hotmail.com' , language_default(), $params);
+    $form_state['redirect'] = 'content/newsletter';
+}
+
+
+
+function newsletter_mail($key, &$message, $params)
+{
+    $language = $message['language'];
+	$message['subject'] = t("A comment has been submitted");
+	$message['body'] = t("Email Testing");
+}
+
+// News Letter Page 
+
+function newsletter_display()
+{
+	global $base_url;
+	$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+	
+	$out = '';
+
+	$out .= '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td width="631" align="left" valign="middle" class="txt-georgia"><span class="tahoma-17"><strong>Newsletter</strong></span></td>';
+    $out .= '<td width="40" align="center" valign="middle"><img src="'.$tPath.'arrow-gra-white.jpg" width="23" height="24" /></td>';
+    $out .= '</tr>';
+    $out .= '</table></td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top" background="'.$tPath.'separator-dash.jpg">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top" class="arial-12-666666"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td width="110" align="left" valign="top"><img src="'.$tPath.'newsletter.jpg" width="100" height="100" /></td>';
+    $out .= '<td align="left" valign="middle" class="arial-12-666666"><div align="justify">';
+    $out .= '<p>Advancespex.com  is a UK  based company now trading worldwide...</p>';
+    $out .= '</div></td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td align="left" valign="top">&nbsp;</td>';
+    $out .= '<td align="left" valign="top" class="arial-12-666666">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '</table>';
+    $out .= '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= '<tr>';
+    $out .= '<td colspan="2" background="'.$tPath.'separator-dash.jpg">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td class="arial-12-666666"><img src="'.$tPath.'hand.jpg" width="43" height="21" />Our goal is to provide the highest quality  products with the latest designs, trends and fashions right into your homes. One  of our core values is<strong> respect for our&nbsp; customer.</strong> &nbsp;Therefore we are committed to providing you the  customer with the best service and product.<br /></td>';
+    $out .= '<td align="center" valign="middle">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td class="arial-12-666666">&nbsp;</td>';
+    $out .= '<td align="center" valign="middle">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '<tr>';
+    $out .= '<td class="arial-12-666666">&nbsp;</td>';
+    $out .= '<td align="center" valign="top">&nbsp;</td>';
+    $out .= '</tr>';
+    $out .= '</table></td>';
+    $out .= '</tr>';
+  	$out .= '</table>';
+	
+	return $out;
+	
+}

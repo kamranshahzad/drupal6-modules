@@ -1,0 +1,5 @@
+; $Id$
+name = kids_images
+description = Place Images on Kids Pages.
+package = Hannock
+core = 6.x

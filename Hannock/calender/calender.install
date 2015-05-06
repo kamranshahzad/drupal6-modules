@@ -1,0 +1,218 @@
+<?php
+
+
+
+ 
+ 
+function calender_install() 
+{
+  $result = drupal_install_schema('calender');
+
+  if ($result[0]['success']) 
+  {
+    $sql = "INSERT INTO {calender} (year,	ayear,areturn1,areturn2,ahalf1,ahalf2,alast1,alast2,		syear,sreturn1,sreturn2,shalf1,shalf2,slast1,slast2,  		myear ,mreturn1,mreturn2,mholy1,mholy2,mhalf1,mhalf2,mlast1,mlast2  )";
+    $sql .= " VALUES ('%s' ,'%s', '%s' , '%s' ,'%s' ,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s' )";
+    db_query($sql, 'test data', 'test data' ,'test data' ,'test data' ,'test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data','test data');
+  }
+}
+
+
+ 
+function calender_uninstall() 
+{
+  drupal_uninstall_schema('calender');
+}
+
+
+function calender_schema() {
+  $schema['calender'] = array(
+    'description' => t('store product related data'),
+    'fields' => array(
+      'cid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+      'year' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('name of product'),
+      ),
+	  
+	  'ayear' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'areturn1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'areturn2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'ahalf1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'ahalf2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'alast1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'alast2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  
+	  
+	  'syear' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'sreturn1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'sreturn2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'shalf1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'shalf2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'slast1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'slast2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  
+	  
+	  'myear' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mreturn1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mreturn2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mholy1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mholy2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mhalf1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mhalf2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mlast1' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+	  'mlast2' => array(
+        'type' => 'varchar',
+        'length' => 127,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('price of product'),
+      ),
+    ),
+	'primary key' => array('cid'),
+  );
+
+  return $schema;
+}
+
+
+
+

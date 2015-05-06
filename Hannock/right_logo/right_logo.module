@@ -1,0 +1,32 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+function right_logo_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show right Logos on Main Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] =	right_logo_html();
+						return $blocks;
+	}
+}
+
+function right_logo_html()
+{
+	$out = '';
+	$out .= '<ul>';
+	$out .= '<li><a target="_blank" href="http://www.healthyschools.gov.uk/Default.aspx?view=local" style="height:78px;"><span class="opaque">Healthy Schools</span></a></li>';
+	$out .= '<li><a target="_blank" href="http://www.eco-schools.org.uk/schools-search/results.aspx?ID=4346" style="height:76px;"><span class="opaque">Eco-Schools</span></a></li>';
+	$out .= '<li><a target="_blank" href="http://www.exeter.ac.uk/" style="height:76px;"><span class="opaque">University of Exeter</span></a></li>';
+	$out .= '<li><a  href="#" style="height:75px;"><span class="opaque">Logo</span></a></li>';
+	$out .= '</ul>';
+	return $out;
+}

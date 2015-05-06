@@ -1,0 +1,5 @@
+; $Id$
+name = "paymentbox"
+description = Payment Box.
+package = Advanced
+core = 6.x

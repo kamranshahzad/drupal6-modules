@@ -1,0 +1,49 @@
+<?php
+// $Id: corner.install,v 1.4 2009/01/06 21:45:19 kirie Exp $
+
+
+
+function vedioplay_install() {
+  $result = drupal_install_schema('vedioplay');
+
+
+  if ($result[0]['success']) {
+	drupal_set_message("Vedio Play Table Created Successfully");
+  }
+}
+
+
+
+
+function vedioplay_uninstall() {
+  drupal_uninstall_schema('vedioplay');
+}
+
+
+function vedioplay_schema() {
+  $schema['vedioplay'] = array(
+    'description' => t('Stores Navigations'),
+    'fields' => array(
+      'vid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Title of Navigations'),
+      ),
+	  'des' => array('type' => 'text', 'not null' => FALSE),
+	  'filename' => array('type' => 'text', 'not null' => FALSE),
+	),
+	'primary key' => array('vid'),
+  );
+  return $schema;
+}
+
+
+
+

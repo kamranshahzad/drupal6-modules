@@ -1,0 +1,5 @@
+; $Id$
+name = "navigation"
+description = Shows navigation on Main Page.
+package = Hannock
+core = 6.x

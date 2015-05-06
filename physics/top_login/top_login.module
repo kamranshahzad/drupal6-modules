@@ -1,0 +1,108 @@
+<?php
+// $Id: my.module,v 1.5 2009/01/11 13:49:11 kirie Exp $
+
+
+function top_login_init()
+{
+ 	global $user;
+	$my_id = $user->uid;
+	$profile_field = 4;
+	$options = array('O-Level','A-Level');
+}
+
+
+
+function top_login_perm() {
+  return array('administer top_login', 'use PHP for my visibility');
+}
+
+
+
+/*function top_login_menu() {
+  $items = array();
+  $items['top_login/list/%/result'] = array(
+   		    'title' => 'Topics Search Result',
+			'page callback' => 'get_all_topics_seached',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+function search_topic_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('did' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'did' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  $doc = db_fetch_object(db_query('SELECT * FROM {documents} WHERE '. implode(' AND ', $query), $params));
+  return $doc;
+}*/
+
+
+
+function top_login_block($op='list', $delta=0, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Manage Login Tasks');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = top_login_front();
+						return $blocks;
+		}
+}
+
+
+
+function top_login_front()
+{
+	global $user;
+	
+	$out .= '';
+	
+	$out .= 	'<table width="300" border="0" cellspacing="0" cellpadding="0">';
+    $out .= 	'<tr>';
+    $out .= 	'<td height="35" align="center"><table width="90%" border="0" cellspacing="0" cellpadding="0">';
+    $out .= 	'<tr>';
+	if( $user->uid)
+	{
+    	$out .= 	'<td class="txtwhite12" >Welcome , '.$user->name.' &nbsp; |&nbsp; '.l('Change Password' , 'user/'.$user->uid.'/edit' ).'&nbsp; | &nbsp; '.l('Logout' , 'logout' ).'</td>';
+	}
+	else
+	{
+		$out .= 	'<td class="txtwhite12" align="right">'.l('Login' , 'user' ).'  |  '.l('Register' , 'user/register' ).' &nbsp;&nbsp;&nbsp;</td>';
+	}
+    $out .= 	'</tr>';
+    $out .= 	'</table></td>';
+    $out .= 	'</tr>';
+    $out .= 	'</table>';
+	
+	return $out;
+}
+
+/*function get_user_status()
+{
+	$result = db_query("SELECT * FROM {profile_values} WHERE fid='$profile_field' AND uid='$my_id'");
+	$row = db_fetch_object($result);
+	return	$row->
+}
+*/

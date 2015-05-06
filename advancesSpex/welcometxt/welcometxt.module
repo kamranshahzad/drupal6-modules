@@ -1,0 +1,40 @@
+<?php
+// $Id$
+
+
+function welcometxt_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Display Welcome Text on Main Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = welcometxt_html();
+						return $blocks;
+	}
+}
+
+function welcometxt_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+		
+		$out .= '<div class="text">';
+		$out .= "<b>Why advancespex.com for prescription glasses and frames? </b><br>
+			At <span class='welcomePageTxt'>advancespex.com</span> we offer quality glasses & frames and designer sunglasses at affordable prices.
+			<span class='welcomePageTxt'>advancespex.com</span> is a UK business set up because we were &ldquo;fed-up&ldquo; of paying high street prices. As an online business we do not have expensive high street shops to maintain and therefore are able to pass on the discounts directly to you.
+			<span class='welcomePageTxt'>advancespex.com</span> offers a wide range of prescription glasses, frames and designer sunglasses &minus; ranging from budget to designer names.
+			<br>
+			For prescription glasses and frames - shop with confidence at <span class='welcomePageTxt'>advancespex.com</span>.
+			<br>
+			Our guarantee for prescription glasses, frames and designer sunglasses.
+			<br>
+			In the unlikely event that you are not entirely satisfied with your prescription glasses, frames or sunglasses. <span class='welcomePageTxt'>advancespex.com</span> offers you a no quibble, hassle free returns and refund guarantee &ndash; that&prime;s a promise.
+			<br>
+			We look forward to you shopping at <span class='welcomePageTxt'>advancespex.com</span> for your prescription glasses, frames and designer sunglasses.
+		   ";  
+  		$out .= '</div>';
+		return $out;
+}

@@ -1,0 +1,79 @@
+/* Basic code - don't modify */
+ 
+ #nav { display: block; margin: 0; padding: 0; position: relative; }
+  #nav li { display: block; list-style: none; margin-left: 0; padding: 0; float: left; position: relative; }
+  #nav a { display: block; }
+  #nav ul { display: none; position: absolute; left: 0; margin: 0; padding: 0; }
+  * html #nav ul { line-height: 0; } /* IE6 "fix" */
+  	#nav ul a { zoom: 1; } /* IE6/7 fix */
+    #nav ul li { float: none; }
+    #nav ul ul { top: 0; }
+    
+/* Essentials - configure this */
+
+#nav ul { width: 132px; }
+#nav ul ul { left: 131px; }
+
+/* Everything else is theming */
+ 
+#nav {  height: 30px; font-family:Arial, Helvetica, sans-serif;}
+#nav *:hover { background-color: none; }
+#nav a { color: white; font-size: 12px; padding: 6px; line-height: 1; text-decoration:none;}
+  #nav li.hover a { }
+  #nav ul { top: 42px; }
+    #nav ul li a { background-color: #2E398A;text-decoration:none; }
+      #nav ul a.hover { background-color: #4E60FF;text-decoration:none; }
+   #nav ul a { border-bottom: 1px solid white; border-right: none; opacity: 0.9; filter: alpha(opacity=90);text-decoration:none; }
+/* #nav ul a { border-bottom: none; } - I also needed this for IE6/7 */
+
+
+
+.homeBT
+{
+	background-image:url(../images/01_01.gif);
+	background-repeat:no-repeat;
+	width:114px;
+	height:43px;
+}
+.childBT
+{
+	background-image:url(../images/01_02.gif);
+	background-repeat:no-repeat;
+	width:114px;
+	height:43px;
+}
+.aboutBT
+{
+	background-image:url(../images/01_03.gif);
+	background-repeat:no-repeat;
+	width:145px;
+	height:43px;
+}
+.newletterBT
+{
+	background-image:url(../images/01_05.gif);
+	background-repeat:no-repeat;
+	width:95px;
+	height:43px;
+}
+.calernderBT
+{
+	background-image:url(../images/01_06.gif);
+	background-repeat:no-repeat;
+	width:85px;
+	height:43px;
+}
+.contactBT
+{
+	background-image:url(../images/01_07.gif);
+	background-repeat:no-repeat;
+	width:100px;
+	height:43px;
+}
+.preschoolBT
+{
+	background-image:url(../images/01_08.jpg);
+	background-repeat:no-repeat;
+	width:101px;
+	height:43px;
+}

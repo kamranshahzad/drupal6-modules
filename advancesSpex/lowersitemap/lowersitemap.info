@@ -1,0 +1,5 @@
+; $Id$
+name = "lowersitemap"
+description = Lower Site Map.
+package = Advanced
+core = 6.x

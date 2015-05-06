@@ -1,0 +1,60 @@
+<?php
+// $Id: corner.install,v 1.4 2009/01/06 21:45:19 kirie Exp $
+
+
+function right_base_install() {
+  $result = drupal_install_schema('right_base');
+  
+  if ($result[0]['success']) {
+  
+  	 $sql = "INSERT INTO {right_base} (event_text, event_date, status)";
+	 $sql .= " VALUES ('%s' ,'%s','%d')";
+  	 db_query($sql, 'Test Text Place Here .. ' ,'10/12/2008', 1 );
+	 
+	 drupal_set_message("Data Installed Successfully");
+  }
+  else
+  {
+  	drupal_set_message("Error in Data Insertion");
+  }
+}
+
+
+
+
+function right_base_uninstall() {
+  drupal_uninstall_schema('right_base');
+}
+
+
+
+function right_base_schema() 
+{
+  $schema['right_base'] = array(
+    'description' => t('Stores Event Dairy settings'),
+    'fields' => array(
+      'eid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Primary Key'),
+      ),
+      'event_date' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('date of event'),
+      ),
+	  'status' => array(
+			'type' => 'int',
+			'not null' => TRUE,
+			'default' => 0,
+			'size' => 'tiny',
+			'description' => t('Status (0,1)'),
+      ),
+	 'event_text' => array('type' => 'text', 'not null' => FALSE),
+    ),
+	'primary key' => array('eid'),
+  );
+  return $schema;
+}

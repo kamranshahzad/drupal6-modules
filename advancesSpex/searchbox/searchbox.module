@@ -1,0 +1,111 @@
+<?php
+// $Id$
+
+
+
+function searchbox_menu() {
+  $items = array();
+    $items['content/list/%/result'] = array(
+   		    'title' => '',
+			'page callback' => 'searchbox_display',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+  );
+   return $items;
+}
+
+
+
+function searchbox_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Search Bar on Main Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = searchbox_html();
+						return $blocks;
+	}
+}
+
+function searchbox_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+		$out .= '<table>';
+		$out .= '<tr>';
+		$out .= '<td>';
+		$out .= '<img height="22" width="174" src="'.$tPath.'searchitem-top.jpg"/>';
+		$out .= '</td>';
+		$out .= '</tr><tr><td>';
+		$out .= drupal_get_form('searchbox_form');
+		$out .= '</td></tr>';
+		$out .= '</table>';
+		
+		return $out;
+}
+
+
+function searchbox_form() 
+{
+	$symbal = "&pound;";
+
+  $form = array();
+  	$form['style'] = array(
+		'#type' => 'select',
+		'#options' => array(99 => 'Select Style' , 0 => 'Classic' , 1 => 'Designer' , 2 => 'Fashionable' ),
+		'#attributes' => array('class' => 'front_glassfor'),
+		'#prefix' => '<div class="front_search_box"><table><tr><td>',
+  		'#suffix' => '</td></tr>',
+	);
+  	$form['glasstype'] = array (
+		'#type' => 'select',
+		'#options' => array(99 =>'Select Glass Type' , 0 => 'Sunglassess' , 1 => 'Prescription'),
+		'#attributes' => array('class' => 'front_glasstype'),
+		'#prefix' => '<tr><td>',
+  		'#suffix' => '</td></tr>',
+  	);
+	$form['glassfor'] = array (
+		'#type' => 'select',
+		'#options' => array(99 =>'Suitable For' , 0 => 'For Kids' , 1 => 'For Women' , 2 => 'For Mens'),
+		'#attributes' => array('class' => 'front_glassfor'),
+		'#prefix' => '<tr><td>',
+  		'#suffix' => '</td></tr>',
+  	);
+	$form['pricefilter'] = array (
+		'#type' => 'select',
+		'#options' => array(99 => 'Glass By Price' , 0 =>'Less then '.variable_get('uc_currency_sign', '$').'51' , 1 => variable_get('uc_currency_sign', '$').'51 to '.variable_get('uc_currency_sign', '$').'99 ' , 2 => variable_get('uc_currency_sign', '$').'100 to '.variable_get('uc_currency_sign', '$').'149' , 3 => variable_get('uc_currency_sign', '$').'150 to '.variable_get('uc_currency_sign', '$').'200' , 4 =>'More then '.variable_get('uc_currency_sign', '$').'200'),
+		'#attributes' => array('class' => 'front_glasscolor'),
+		'#prefix' => '<tr><td>',
+  		'#suffix' => '</td></tr>',
+  	);
+	$form['color'] = array (
+		'#type' => 'select',
+		'#options' => array(99 => 'Glass By Color' , 0 => 'Metallic', 1 => 'Red' , 2 => 'Blue' , 3 => 'Green' , 4 => 'Yellow', 5 => 'White', 6 => 'Black', 7 => 'Brown', 8 => 'Pink', 9 => 'Purple' ),
+		'#attributes' => array('class' => 'front_glasscolor'),
+		'#prefix' => '<tr><td>',
+  		'#suffix' => '</td></tr>',
+  	);
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('') , 
+		'#attributes' => array('class' => 'searchButton'),
+		'#prefix' => '<tr><td align="right">',
+  		'#suffix' => '</td></tr></table></div>',
+		);
+	return $form;
+}
+
+function searchbox_form_submit($form, &$form_state)
+{
+	$style = $form_state['values']['style'];
+	$glasstype = $form_state['values']['glasstype'];
+	$glassfor =  $form_state['values']['glassfor'];
+	$pricefilter = $form_state['values']['pricefilter'];
+	$color =  $form_state['values']['color'];
+	$form_state['redirect'] = 'searchglasses/'.$style.'/'.$glasstype.'/'.$glassfor.'/'.$pricefilter.'/'.$color;
+}
+

@@ -1,0 +1,51 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+function podcast_menu() 
+{	
+	 $items = array();
+    $items['podcast/display'] = array(              
+		  'title' => 'Test',
+		  'page callback' => 'podcast_main_display',
+		  'access arguments' => array('access content'),
+		  'type' => MENU_CALLBACK,
+		  'file' => 'podcast.content.inc',
+	);
+	$items['podcast/%/display'] = array(
+			'title' => 'Test',
+			'page callback' => 'podcast_list_display',
+			'page arguments' => array(1),
+			'access arguments' => array('access content'),
+			'type' => MENU_CALLBACK,
+			'file' => 'podcast.content.inc',
+	);
+	 return $items;
+}
+
+
+function podcast_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Podcast Icon on Footer');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = podcast_html();
+						return $blocks;
+	}
+}
+
+function podcast_html()
+{
+		$path = drupal_get_path('module', 'podcast').'/images/';
+		$imagePath = 'click-playnow.gif';
+		
+		$out = '';
+		$out .= '<div style="text-align:center;"><a href="?q=podcast/vedio/1/display"><img src="'.$path.$imagePath.'" alt="Click here to play now!" border="0" /></a></div>';
+		return $out;
+}

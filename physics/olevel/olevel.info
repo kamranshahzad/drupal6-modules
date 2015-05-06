@@ -1,0 +1,5 @@
+; $Id$
+name = "olevel"
+description = Shows O-Level Documents.
+package = physics
+core = 6.x

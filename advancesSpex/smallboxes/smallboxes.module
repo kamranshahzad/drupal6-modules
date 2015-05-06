@@ -1,0 +1,52 @@
+<?php
+// $Id$
+
+
+function smallboxes_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('4 Small Boxes');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = smallboxes_html();
+						return $blocks;
+	}
+}
+
+function smallboxes_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+		
+		$out = '';
+
+		$out .= '<div class="boxDiv">';
+        $out .= '<div style=" font-family:Tahoma, arial, verdana; font-size:12px; color:#FFFFFF; padding:16px 0px 5px 8px;"><strong>Buying Guide</strong><br /> 1, 2, 3</div>';
+        $out .= '<div class="txtDiv"><span class="tahoma-11">This  guide will help you step by step to reveal all the secrets</span><br />';
+        $out .= '<img src="'.$tPath.'guide-icon.jpg" width="45" height="66" hspace="26" vspace="5" /><br />';
+        $out .= '<a href="?q=node/29"><img src="'.$tPath.'enter-btn.jpg" width="80" height="20" hspace="16" border="0" /></a></div>';
+        $out .= '</div>';
+                        
+		$out .= '<div class="boxDiv" style="margin-right:14px">';
+		$out .= '<div style=" font-family:Tahoma, arial, verdana; font-size:12px; color:#FFFFFF; padding:16px 0px 5px 8px;"><strong>Start</strong> shopping<br />for your glasses</div>';
+		$out .= '<div class="txtDiv"><span class="tahoma-11">Please press enter to start shopping for your glasses.</span><br />';
+  		$out .= '<a href="?q=catalog"><img src="'.$tPath.'enter-btn.jpg" width="80" height="20" hspace="16" vspace="5" border="0" /></a></div><div><img src="'.$tPath.'request-imafge.jpg" alt="" width="91" height="60" hspace="2" vspace="9" /></div>';
+		$out .= '</div>';
+
+		$out .= '<div class="boxDiv">';
+		$out .= '<div style=" font-family:Tahoma, arial, verdana; font-size:12px; color:#FFFFFF; padding:16px 0px 5px 8px;"><strong>Become </strong>next<br />Adv-spex   model</div>';
+		$out .= '<div class="txtDiv"><span class="tahoma-11">Please press enter to below to be the next Advancespex model</span><br />';
+  		$out .= '<a href="?q=node/37"><img src="'.$tPath.'model-icon2.jpg" alt="next model" width="110" height="87" vspace="10" border="0" /></a><br />';
+  		$out .= '</div>';
+		$out .= '</div>';
+
+		$out .= '<div class="boxDiv">';
+		$out .= '<div style=" font-family:Tahoma, arial, verdana; font-size:12px; color:#FFFFFF; padding:16px 0px 5px 8px;"><strong>Promote <br></strong>Music Video</div>';
+		$out .= '<div class="txtDiv"><span class="tahoma-11">You can promote your music video now, just click below.</span><br />';
+  		$out .= '<img src="'.$tPath.'03-1.jpg" width="100" height="73" hspace="6" vspace="2"/><br />';
+  		$out .= '<a href="?q=node/7"><img src="'.$tPath.'enter-btn.jpg" width="80" height="20" hspace="16" border="0" /></a></div>';
+		$out .= '</div>';
+		
+		return $out;
+}

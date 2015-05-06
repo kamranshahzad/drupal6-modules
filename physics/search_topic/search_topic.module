@@ -1,0 +1,364 @@
+<?php
+// $Id: my.module,v 1.5 2009/01/11 13:49:11 kirie Exp $
+
+
+/*function search_topic_init()
+{
+ 	$theme = drupal_get_path('theme', 'ebr');
+	require_once($theme."/translate_strings_get.php");	
+}*/
+
+
+
+function search_topic_perm() {
+  return array('administer search_topic', 'use PHP for my visibility');
+}
+
+
+
+function search_topic_menu() {
+  $items = array();
+  $items['search_topic/list/%/result'] = array(
+   		    'title' => 'Topics Search Result',
+			'page callback' => 'get_all_topics_seached',
+			'page arguments' => array(2),
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+function search_topic_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('did' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'did' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  $doc = db_fetch_object(db_query('SELECT * FROM {documents} WHERE '. implode(' AND ', $query), $params));
+  return $doc;
+}
+
+
+
+function search_topic_block($op='list', $delta=0, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Search Bar');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = get_search_front();
+						return $blocks;
+		}
+}
+
+
+
+function get_search_front()
+{
+	$out .= drupal_get_form('search_bar_form');
+	return $out;
+}
+
+
+function search_bar_form() 
+{
+	$part1 = '';
+	$part2 = '';
+	
+	$part1 .= '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+    $part1 .= '<tr>';
+    $part1 .= '<td><img src="sites/all/themes/physics/images/searchbox-top.jpg" width="255" height="7" alt="" /></td>';
+    $part1 .= '</tr>';
+    $part1 .= '<tr>';
+    $part1 .= '<td align="center" bgcolor="#DCEBF0">';
+	$part1 .= '<table width="253" border="0" cellspacing="0" cellpadding="0">';
+    $part1 .= '<tr>';
+    $part1 .= '<td width="255" height="50" align="center" valign="middle" bgcolor="#F0FBFF"><table width="234" border="0" cellspacing="0" cellpadding="0">';
+    $part1 .= '<tr>';
+    $part1 .= '<td align="center" class="field">';
+    $part1 .= '<label>';
+	
+	$part2 .= '</tr>';
+    $part2 .= '</table></td>';
+    $part2 .= '</tr>';
+    $part2 .= '</table>';
+	$part2 .= '</td>';
+    $part2 .= '</tr>';
+    $part2 .= '<tr>';
+    $part2 .= '<td><img src="sites/all/themes/physics/images/searchbox-bottom.jpg" width="255" height="7" alt="" /></td>';
+    $part2 .= '</tr>';
+    $part2 .= '</table>';
+	
+	
+    $form = array();
+  	$form['state'] = array (
+		'#type' => 'textfield',
+		'#default_value' => t('Enter keyword here'),
+		'#attributes' => array('class' => 'field'),
+		'#prefix' => $part1,
+  		'#suffix' => '</label></td>',
+  	);
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('') , 
+		'#attributes' => array('class' => 'seachButton'),
+		'#prefix' => '<td width="65">',
+  		'#suffix' => $part2,
+		);
+	return $form;
+}
+
+function search_bar_form_validate($form , &$form_state)
+{
+	if ($form_state['values']['state'] == 'Punjab') 
+	{
+		form_set_error('user_name',t('Punjab is not allowed to use this form.'));
+	}
+}
+
+function search_bar_form_submit($form, &$form_state)
+{
+	$name = $form_state['values']['state'];
+	$form_state['redirect'] = 'search_topic/list/'.$name.'/result';
+}
+
+
+/*
+	Main Search Function
+*/
+
+function get_all_topics_seached($topic)
+{
+	global $user;
+	
+	$out = '';
+	
+	
+	
+	
+
+	
+	// Get User Info
+	$result = db_query("SELECT * FROM {profile_values} WHERE fid='$profile_field' AND uid='$my_id'");
+	$row = db_fetch_object($result);
+	
+	
+	
+	
+/*	foreach(get_topic_olevel($topic) as $key => $value) 
+	{	
+		foreach($value as $i=>$j)
+		{
+			foreach($j as $a=>$b)
+			{
+				$out .= 'ID:'.$i.'<br>';
+				$out .= 'Title:'.$a. '<br>';
+				$out .= 'Des:'.$b.'<br>';
+			}
+		}
+	}*/
+	// Get Documents
+	
+	//$result1 = db_query("SELECT * FROM {documents}  WHERE tid = '".get_topic_id($topic)."'");
+	
+	
+	
+	
+	/*
+		O-Level Topices Search
+	*/
+	$out .= '<h2>O-Level Topics</h2>';
+	$out .= '<b>Total '.count(get_topic_olevel($topic)).' Topics Found in O-Level</b>';
+	
+	
+	if(count(get_topic_olevel($topic)) == 0)
+	{
+		$out .= 'Not Topic Found';
+		
+	}
+	else
+	{
+		if(count(get_topic_olevel($topic)) > 0)
+		{
+					$out .= '<table width="874" border="0" cellpadding="0" cellspacing="0">';
+					$out .= '<tr>';
+					$out .= '<td width="874" bgcolor="#CADFF0"><table width="100%" border="0" cellspacing="1" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td height="35" align="right" class="txtblue14"><table width="860" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td width="279" align="left"><strong>Topic Name</strong></td>';
+					$out .= '<td width="566" align="left"><strong>Topic Description</strong></td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '<tr>';
+					$out .= '<td bgcolor="#FFFFFF">	';
+					foreach(get_topic_olevel($topic) as $key => $value) 
+					{	
+						foreach($value as $i=>$j)
+						{
+							foreach($j as $a=>$b)
+							{
+								$out .= '<table width="100%" border="0" cellspacing="1" cellpadding="6">';
+								$out .= '<tr>';
+								$out .= '<td bgcolor="#ECF3F9"><table width="845" border="0" cellspacing="0" cellpadding="0">';
+								$out .= '<tr>';
+								
+								// Title of Topics
+									$out .= '<td width="279" align="left">'.l($a,'olevel/list/'.$i.'/notes').'</td>';
+							
+								$out .= '<td width="566">'.$b.'</td>';
+								$out .= '</tr>';
+								$out .= '</table></td>';
+								$out .= '</tr>';
+								$out .= '</table>';
+							}
+						}
+					}
+					$out .= '</td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '</table>';
+		}
+		else
+		{
+			$out .= 'No Topic Found';
+		}
+	}
+	
+	
+	/*
+		A-Level TOpic Search
+	*/
+	
+	$out .= '<h2>A-Level Topics</h2>';
+	$out .= '<b>Total '.count(get_topic_alevel($topic)).' Topics Found in A-Level</b>';
+	
+	
+	if(count(get_topic_alevel($topic)) == 0)
+	{
+		//$out .= 'Not Topic Found';	
+	}
+	else
+	{
+		if(count(get_topic_alevel($topic)) > 0)
+		{
+					$out .= '<table width="874" border="0" cellpadding="0" cellspacing="0">';
+					$out .= '<tr>';
+					$out .= '<td width="874" bgcolor="#CADFF0"><table width="100%" border="0" cellspacing="1" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td height="35" align="right" class="txtblue14"><table width="860" border="0" cellspacing="0" cellpadding="0">';
+					$out .= '<tr>';
+					$out .= '<td width="279" align="left"><strong>Topic Name</strong></td>';
+					$out .= '<td width="566" align="left"><strong>Topic Description</strong></td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '<tr>';
+					$out .= '<td bgcolor="#FFFFFF">	';
+					foreach(get_topic_alevel($topic) as $key => $value) 
+					{	
+						foreach($value as $i=>$j)
+						{
+							foreach($j as $a=>$b)
+							{
+								$out .= '<table width="100%" border="0" cellspacing="1" cellpadding="6">';
+								$out .= '<tr>';
+								$out .= '<td bgcolor="#ECF3F9"><table width="845" border="0" cellspacing="0" cellpadding="0">';
+								$out .= '<tr>';
+								if($user->uid){
+									$out .= '<td width="279" align="left">'.l($a,'olevel/list/'.$i.'/notes').'</td>';
+								}else{
+									$out .= '<td width="279" align="left">'.$a.'</td>';
+								}
+								$out .= '<td width="566">'.$b.'</td>';
+								$out .= '</tr>';
+								$out .= '</table></td>';
+								$out .= '</tr>';
+								$out .= '</table>';
+							}
+						}
+					}
+					$out .= '</td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '</table></td>';
+					$out .= '</tr>';
+					$out .= '</table>';
+		}
+		else
+		{
+			$out .= 'No Topic Found';
+		}
+	}
+			
+	return $out;
+}
+
+
+
+
+/*
+	Helper Functions
+*/
+
+function get_topic_olevel($topic)
+{
+	$topic_arr = array();
+	$result = db_query("SELECT * FROM {topics} WHERE cat= '0'");
+	while($row = db_fetch_object($result))
+	{
+		if($row->title == $topic)
+		{
+			$topic_arr[] = array($row->tid => array($row->title => $row->des));
+		}
+	}
+	return $topic_arr;
+}
+
+function get_topic_alevel($topic)
+{
+	$topic_arr = array();
+	$result = db_query("SELECT * FROM {topics} WHERE cat= '1'");
+	while($row = db_fetch_object($result))
+	{
+		if($row->title == $topic)
+		{
+			$topic_arr[] = array($row->tid => array($row->title => $row->des));
+		}
+	}
+	return $topic_arr;
+}
+
+function count_topics_search($id)
+{
+	$count = db_result(db_query("SELECT COUNT(*) FROM {documents}  WHERE tid = '$id'"));
+	return $count;
+}
+

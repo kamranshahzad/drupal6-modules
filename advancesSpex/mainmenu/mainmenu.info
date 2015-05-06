@@ -1,0 +1,5 @@
+; $Id$
+name = "mainmenu"
+description = Main Menu.
+package = Advanced
+core = 6.x

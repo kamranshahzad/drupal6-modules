@@ -1,0 +1,5 @@
+; $Id$
+name = "audio"
+description = Shows MP3 Player.
+package = Hannock
+core = 6.x

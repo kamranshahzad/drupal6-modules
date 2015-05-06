@@ -1,0 +1,162 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+/*
+	Navigation hook_menu
+*/
+function links_menu() {
+  $items = array();
+  $items['admin/build/links'] = array(
+    'title' => 'Links',
+    'description' => t('Configure Bottom Links'),
+    'page callback' => 'links_admin_display',
+    'access arguments' => array('administer links'),
+    'file' => 'links.admin.inc',
+  );
+  $items['admin/build/links/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/links/add'] = array(
+    'title' => 'Add Links',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('links_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer links'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'links.admin.inc',
+  );
+  $items['admin/build/links/%links/configure'] = array(
+    'title' => 'Configure Links',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('links_admin_configure', 3),
+    'access arguments' => array('administer links'),
+    'type' => MENU_CALLBACK,
+    'file' => 'links.admin.inc',
+  );
+  $items['admin/build/links/%links/delete'] = array(
+    'title' => 'Delete news',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('links_admin_delete', 3),
+    'access arguments' => array('administer links'),
+    'type' => MENU_CALLBACK,
+    'file' => 'links.admin.inc',
+  );
+  $items['admin/build/links/%links/disable'] = array(
+    'title' => 'Disables Navigation Menu',
+    'page callback' => 'links_admin_disable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer links'),
+    'type' => MENU_CALLBACK,
+    'file' => 'links.admin.inc',
+  );
+  $items['admin/build/links/%links/enable'] = array(
+    'title' => 'Enables Links ',
+    'page callback' => 'links_admin_enable',
+    'page arguments' => array(3),
+    'access arguments' => array('administer links'),
+    'type' => MENU_CALLBACK,
+    'file' => 'links.admin.inc',
+  );
+  $items['content/links/display'] = array(              
+					'title' => '',
+					'page callback' => 'links_list_display',
+					'access arguments' => array('access content'),
+					'type' => MENU_CALLBACK,
+					'file' => 'links.content.inc',
+	);
+  return $items;
+}
+
+
+/*
+	Navigation hook_load
+*/
+
+function links_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('lid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'lid' || $key == 'status' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $links = db_fetch_object(db_query('SELECT * FROM {links} WHERE '. implode(' AND ', $query), $params));
+  return $links;
+}
+
+
+
+function links_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Bottom links on Footer');
+						return $blocks;
+				case 'view':
+						$blocks['content'] =links_html();
+						return $blocks;
+	}
+}
+
+function links_html()
+{		
+		$path = drupal_get_path('theme', 'hannock').'/';
+  		$image =  $path. '/images/btn-more-links.gif';
+		
+		
+		
+		$out = '';
+		$result = db_query("SELECT * FROM {links} WHERE status ='1'");
+		$count = db_result(db_query("SELECT COUNT(*) FROM {links} WHERE status ='1'"));
+		
+		$options = array(
+              'attributes' => array(),
+              'html' => TRUE,
+        );  
+		$out .= '<div class="bottomlinks-innercontainer-01-links-list">';
+		$out .= '<ul>';
+		$link['localized_options']['attributes']['target'] = '_blank';
+		while ($row = db_fetch_object($result)) 
+		{
+			if($record < 7)
+			{
+				if($row->external == 0){
+					$out .= '<li>'.l($row->title, $row->path ).'</li>';
+				}
+				else
+				{
+					$out .= '<li>'.l($row->title, $row->path , $link['localized_options']).'</li>';
+				}
+				$record++;
+			}
+		}
+		$out .= '</ul>';
+		$out .= '</div>';
+		if($count > 7)
+		{
+			$out .= '<div style="text-align:center;">'.l('<img src="'.$image.'" alt="read more"/>', 'content/links/display', $options).'</div>';
+		}
+
+		return $out;
+}
+

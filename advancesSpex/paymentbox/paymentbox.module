@@ -1,0 +1,28 @@
+<?php
+// $Id$
+
+
+function paymentbox_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Payment Box');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = paymentbox_html();
+						return $blocks;
+	}
+}
+
+function paymentbox_html()
+{
+		global $base_url;
+		$tPath = $base_url.'/sites/all/themes/advancesSpex/images/';
+
+
+		$out = '';
+		
+		$out .= '<a href="?q=node/26"><img src="'.$tPath.'payment-window.jpg" alt="" width="366" height="75" border="0"  /></a>';
+		
+		return $out;
+}

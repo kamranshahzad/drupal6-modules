@@ -1,0 +1,229 @@
+<?php
+// $Id$
+
+function imagedisplay_perm() 
+{
+	return array('list flavors', 'add flavor');
+}
+
+
+function imagedisplay_menu() 
+{
+			$items['imagedisplay'] = array(
+			'title' => 'Page Image Settings',
+			'access arguments' => array('list flavors'),
+			'page callback' => 'milkshake_overview',
+			'type' => MENU_NORMAL_ITEM,
+			);
+				$items['imagedisplay/list'] = array(
+				'title' => 'Description',
+				'access arguments' => array('list flavors'),
+				'type' => MENU_DEFAULT_LOCAL_TASK,
+				'weight' => 0,
+				);
+				  $items['imagedisplay/contact'] = array(
+					'title' => 'Contact Us',
+					'page callback' => 'drupal_get_form',
+					'page arguments' => array('imagedisplay_contact' , NULL),
+					'access arguments' => array('administer imagedisplay'),
+					'type' => MENU_LOCAL_TASK,
+					'weight' => 1,
+				  );
+				$items['imagedisplay/news'] = array(
+				'title' => 'News & Events Image',
+				'page callback' => 'drupal_get_form',
+				'page arguments' => array('imagedisplay_news' , NULL),
+				'access arguments' => array('administer imagedisplay'),
+				'type' => MENU_LOCAL_TASK,
+				'weight' => 2,
+				);
+				$items['imagedisplay/school'] = array(
+				'title' => 'Hennock School Image',
+				'page callback' => 'drupal_get_form',
+				'page arguments' => array('imagedisplay_school' , NULL),
+				'access arguments' => array('administer imagedisplay'),
+				'type' => MENU_LOCAL_TASK,
+				'weight' => 3,
+				);
+				return $items;
+}
+
+function milkshake_overview() 
+{
+		$output = t('Using this you can manage some images which is displayed on different pages , For Example Hennock School Image on the Main Page  etc');
+		return $output;
+}
+
+
+/*
+		Contact Us Page
+*/
+function imagedisplay_contact($form_state) 
+{
+
+  $form = array();
+  $form['lid'] = array(
+    '#type' => 'value',
+    '#value' => $nav->lid,
+  );
+    $form['info'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Contact Us Image'),
+    '#collapsible' => TRUE,
+  );
+	$form['#attributes']['enctype'] = 'multipart/form-data';
+    $form['info']['document_upload'] = array(
+      '#type' => 'file',
+      '#title' => t('Select Image'),
+      '#required' => FALSE,
+      '#description' => t('Click "Browse" to select a Document File to upload.  '),
+      );
+   $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#submit' => array('imagedisplay_contact_submit'),
+    );
+  return $form;
+}
+
+function imagedisplay_contact_submit($form, &$form_state) 
+{
+	  $validators = array( 'file_validate_is_image' => array(),'file_validate_image_resolution' => array('276x189'),'file_validate_size' => array(3000 * 1024),);
+  	  $file = file_save_upload('document_upload', $validators , file_directory_path().'/'.get_imagedisplay_folder());
+      if($file)
+   	  {
+					$sql = "UPDATE {imagedisplay} SET";
+					$sql .= " imagename = '%s'  ";
+					$sql .= " WHERE pid = %d";
+					db_query($sql,
+						 $file->filename,
+						 1
+					);
+					drupal_set_message('Contact Us Page Image Changed Successfully');
+  					$form_state['redirect'] = 'imagedisplay';
+  					return;
+		}
+		else
+		{
+				drupal_set_message(t('Please Select Image to Upload'));
+    			$form_state['redirect'] = 'imagedisplay/contact';
+		}
+}
+
+/*
+		New & Events Page
+*/
+function imagedisplay_news($form_state) 
+{
+
+  $form = array();
+  $form['lid'] = array(
+    '#type' => 'value',
+    '#value' => $nav->lid,
+  );
+    $form['info'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('News & Events Image'),
+    '#collapsible' => TRUE,
+  );
+	$form['#attributes']['enctype'] = 'multipart/form-data';
+    $form['info']['document_upload'] = array(
+      '#type' => 'file',
+      '#title' => t('Select Image'),
+      '#required' => FALSE,
+      '#description' => t('Click "Browse" to select a Document File to upload.  '),
+      );
+   $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#submit' => array('imagedisplay_news_submit'),
+    );
+  return $form;
+}
+
+function imagedisplay_news_submit($form, &$form_state) 
+{
+	  $validators = array( 'file_validate_is_image' => array(),'file_validate_image_resolution' => array('120x85'),'file_validate_size' => array(3000 * 1024),);
+  	  $file = file_save_upload('document_upload', $validators , file_directory_path().'/'.get_imagedisplay_folder());
+      if($file)
+   	  {
+					$sql = "UPDATE {imagedisplay} SET";
+					$sql .= " imagename = '%s'  ";
+					$sql .= " WHERE pid = %d";
+					db_query($sql,
+						 $file->filename,
+						 2
+					);
+					drupal_set_message('News & Events Image Changed Successfully');
+  					$form_state['redirect'] = 'imagedisplay';
+  					return;
+		}
+		else
+		{
+				drupal_set_message(t('Please Select Image to Upload'));
+    			$form_state['redirect'] = 'imagedisplay/news';
+		}
+}
+
+/*
+		School Page
+*/
+function imagedisplay_school($form_state) 
+{
+
+  $form = array();
+  $form['lid'] = array(
+    '#type' => 'value',
+    '#value' => $nav->lid,
+  );
+    $form['info'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Hennock School Image'),
+    '#collapsible' => TRUE,
+  );
+	$form['#attributes']['enctype'] = 'multipart/form-data';
+    $form['info']['document_upload'] = array(
+      '#type' => 'file',
+      '#title' => t('Select Image'),
+      '#required' => FALSE,
+      '#description' => t('Click "Browse" to select a Document File to upload.  '),
+      );
+   $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#submit' => array('imagedisplay_school_submit'),
+    );
+  return $form;
+}
+
+function imagedisplay_school_submit($form, &$form_state) 
+{
+	  $validators = array( 'file_validate_is_image' => array(),'file_validate_image_resolution' => array('120x85'),'file_validate_size' => array(3000 * 1024),);
+  	  $file = file_save_upload('document_upload', $validators , file_directory_path().'/'.get_imagedisplay_folder());
+      if($file)
+   	  {
+					$sql = "UPDATE {imagedisplay} SET";
+					$sql .= " imagename = '%s'  ";
+					$sql .= " WHERE pid = %d";
+					db_query($sql,
+						 $file->filename,
+						 3
+					);
+					drupal_set_message('Hennock School Page Image Changed Successfully');
+  					$form_state['redirect'] = 'imagedisplay';
+  					return;
+		}
+		else
+		{
+				drupal_set_message(t('Please Select Image to Upload'));
+    			$form_state['redirect'] = 'imagedisplay/school';
+		}
+}
+
+
+function get_imagedisplay_folder()
+{
+	$result = db_query("SELECT * FROM file_paths WHERE fid='5'");
+	$row = db_fetch_object($result);
+	return $row->text_path;
+}

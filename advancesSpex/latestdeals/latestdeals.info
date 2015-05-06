@@ -1,0 +1,5 @@
+; $Id$
+name = "latestdeals"
+description = Latest Deals .
+package = Advanced
+core = 6.x

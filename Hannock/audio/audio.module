@@ -1,0 +1,63 @@
+<?php
+// $Id$
+
+function audio_menu() 
+{
+	$items = array();
+	$items['podcast/audio/%/display'] = array(
+			'title' => 'Podcast Page',
+			'page callback' => 'player_audio_display',
+			'page arguments' => array(2),
+			'access arguments' => array('access content'),
+			'type' => MENU_CALLBACK,
+			'file' => 'audio.content.inc',
+	);
+	
+  	return $items;
+}
+
+
+
+function audio_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show MP3 Player on Podcast');
+						return $blocks;
+				case 'view':
+						$blocks['content'] = audio_html();
+						return $blocks;
+	}
+}
+
+function audio_html()
+{
+		$result1 = db_query("SELECT * FROM {audioplay} WHERE cat='g'");
+		
+		$result2 = db_query("SELECT * FROM {audioplay} WHERE cat='k'");		
+		
+		$path = drupal_get_path('theme', 'hannock').'/';
+		
+		$out = '';
+		$out .= '<div class="head">General</div>';
+		$out .= '<div class="list">';
+  		$out .= '<ul>';
+		while($row1 = db_fetch_object($result1))
+		{
+    		$out .= '<li>'.l($row1->title, 'podcast/audio/'.$row1->aid.'/display').'</li>';
+		}
+  		$out .= '</ul>';
+ 		$out .= '</div>';
+		$out .= '<div class="head">Kids</div>';
+		$out .= '<div class="list">';
+  		$out .= '<ul>';
+		while($row2 = db_fetch_object($result2))
+		{
+    		$out .= '<li>'.l($row2->title, 'podcast/audio/'.$row2->aid.'/display').'</li>';
+		}
+  		$out .= '</ul>';
+		$out .= '</div>';
+
+		return $out;
+}
+

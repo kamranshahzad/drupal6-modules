@@ -1,0 +1,5 @@
+; $Id$
+name = "tabbox"
+description = JQuery Tab Box on Header.
+package = Advanced
+core = 6.x

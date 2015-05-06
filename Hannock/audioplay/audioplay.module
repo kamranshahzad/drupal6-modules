@@ -1,0 +1,82 @@
+<?php
+// $Id$
+
+
+function audioplay_menu() {
+  $items = array();
+  $items['admin/build/audioplay'] = array(
+    'title' => 'Audio Play',
+    'description' => t('Configure audioplay'),
+    'page callback' => 'audioplay_admin_display',
+    'access arguments' => array('administer audioplay'),
+    'file' => 'audioplay.admin.inc',
+  );
+  $items['admin/build/audioplay/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  $items['admin/build/audioplay/add'] = array(
+    'title' => 'Upload Audio File',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('audioplay_admin_configure', NULL, 'add'),
+    'access arguments' => array('administer audioplay'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'audioplay.admin.inc',
+  );
+  $items['admin/build/audioplay/%audioplay/configure'] = array(
+    'title' => 'Configure Audio File',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('audioplay_admin_configure', 3),
+    'access arguments' => array('administer audioplay'),
+    'type' => MENU_CALLBACK,
+    'file' => 'audioplay.admin.inc',
+  );
+  $items['admin/build/audioplay/%audioplay/delete'] = array(
+    'title' => 'Delete Audio File',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('audioplay_admin_delete', 3),
+    'access arguments' => array('administer audioplay'),
+    'type' => MENU_CALLBACK,
+    'file' => 'audioplay.admin.inc',
+  );
+  $items['content/audioplay/display'] = array(              
+					'title' => '',
+					'page callback' => 'audioplay_list_display',
+					'access arguments' => array('access content'),
+					'type' => MENU_CALLBACK,
+					'file' => 'audioplay.content.inc',
+  );
+  return $items;
+}
+
+
+
+
+function audioplay_load($array = array()) 
+{
+  $query = array();
+  $params = array();
+
+  if (is_numeric($array)) {
+    $array = array('aid' => $array);
+  }
+  elseif (!is_array($array)) {
+    return FALSE;
+  }
+
+  foreach ($array as $key => $value) {
+    if ($key == 'aid' ) {
+      $query[] = "$key = %d";
+      $params[] = $value;
+    }
+    else {
+      $query[]= "LOWER($key) = LOWER('%s')";
+      $params[] = $value;
+    }
+  }
+  // Only return first hit
+  $ad = db_fetch_object(db_query('SELECT * FROM {audioplay} WHERE '. implode(' AND ', $query), $params));
+  return $ad;
+}
+

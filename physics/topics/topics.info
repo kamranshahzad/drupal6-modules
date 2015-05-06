@@ -1,0 +1,5 @@
+; $Id$
+name = "topics"
+description = Configure topics of Lectures .
+package = physics
+core = 6.x

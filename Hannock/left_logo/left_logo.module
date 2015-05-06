@@ -1,0 +1,32 @@
+<?php
+// $Id$
+/**
+* @file
+* Play with the Form API.
+*/
+
+
+
+function left_logo_block($op='list', $delta=1, $edit=array()) 
+{
+	switch ($op) {
+				case 'list':
+						$blocks[0]['info'] = t('Show Left Logos on Main Page');
+						return $blocks;
+				case 'view':
+						$blocks['content'] =	left_logo_html();
+						return $blocks;
+	}
+}
+
+function left_logo_html()
+{
+		$out = '';
+		$out .= '<ul>';
+		$out .= '<li><a target="_blank" href="http://www.ofsted.gov.uk/oxedu_providers/full/(urn)/113202/(type)/4096/(typename)/Primary%20schools" style="height:78px;"><span class="opaque">Ofsted Oustanding 2007|2008</span></a></li>';
+		$out .= '<li><a href="http://hennock-primary.devon.sch.uk/site2/sites/default/files/Activemark_Factsheet.doc" style="height:76px;"><span class="opaque">Activemark 2008</span></a></li>';
+		$out .= '<li><a target="_blank" href="http://dynamic.investis.com/rrscienceprize/entries/viewentry.php?id=966" style="height:76px;"><span class="opaque">Rolls-Royce</span></a></li>';
+		$out .= '<li><a href="http://hennock-primary.devon.sch.uk/site2/sites/default/files/stp-silver-template.doc" style="height:75px;"><span class="opaque">Devon</span></a></li>';
+		$out .= '</ul>';
+		return $out;
+}

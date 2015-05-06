@@ -1,0 +1,5 @@
+; $Id$
+name = "activites"
+description = Shows activites on Main Page.
+package = Hannock
+core = 6.x

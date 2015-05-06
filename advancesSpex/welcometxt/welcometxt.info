@@ -1,0 +1,5 @@
+; $Id$
+name = "welcometxt"
+description = Welcome Text.
+package = Advanced
+core = 6.x
